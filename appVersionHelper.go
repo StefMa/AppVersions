@@ -5,29 +5,29 @@ import (
 	"net/http"
 	"strings"
 	"stefma.guru/appVersions/usecase"
+	"stefma.guru/appVersions/presentation"
 )
 
 func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	androidQuery := r.URL.Query().Get("android")
 	iosQuery := r.URL.Query().Get("ios")
+	format := r.URL.Query().Get("format")
 
+	androidAppVersions := []usecase.AppVersion{}
 	if androidQuery != "" {
 		androidAppIds := strings.Split(androidQuery, ",")
-		appVersions := usecase.AndroidVersions(androidAppIds)
-		for _, appVersion := range appVersions {
-			fmt.Fprintf(w, "Android - %s: %s\n", appVersion.AppId, appVersion.Version)
-		}
+		androidAppVersions = usecase.AndroidVersions(androidAppIds)
 	}
 
+	iosAppVersions := []usecase.AppVersion{}
 	if iosQuery != "" {
 		iosAppIds := strings.Split(iosQuery, ",")
-		appVersions := usecase.IosVersions(iosAppIds)
-		for _, appVersion := range appVersions {
-			fmt.Fprintf(w, "iOS - %s: %s\n", appVersion.AppId, appVersion.Version)
-		}
+		iosAppVersions = usecase.IosVersions(iosAppIds)
 	}
 
-	if androidQuery == "" && iosQuery == "" {
+	if len(androidAppVersions) > 0 || len(iosAppVersions) > 0 {
+		fmt.Fprintf(w, presentation.FormatOutput(format, androidAppVersions, iosAppVersions))
+	} else {
 		fmt.Fprintf(w, "Please add a 'ios' or 'android' query to the url")
 	}
 }
