@@ -1,4 +1,4 @@
-module stefma.guru
+module stefma.guru/appVersions
 
 go 1.14
 
