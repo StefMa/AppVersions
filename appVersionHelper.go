@@ -28,6 +28,6 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	if len(androidAppVersions) > 0 || len(iosAppVersions) > 0 {
 		fmt.Fprintf(w, presentation.FormatOutput(format, androidAppVersions, iosAppVersions))
 	} else {
-		fmt.Fprintf(w, "Please add a 'ios' or 'android' query to the url")
+		fmt.Fprintf(w, "%s", presentation.HelpText(r.Host))
 	}
 }
