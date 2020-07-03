@@ -8,35 +8,38 @@ import (
 )
 
 type jsonOutput struct {
-  AndroidAppVersions []jsonAppVersionOutput `json:"androidVersions,omitempty"`
-  IosAppVersions []jsonAppVersionOutput `json:"iosVersions,omitempty"`
+  AndroidApps []jsonAppOutput `json:"android,omitempty"`
+  IosApps []jsonAppOutput `json:"ios,omitempty"`
 }
 
-type jsonAppVersionOutput struct {
-  AppId string `json:"appId"`
+type jsonAppOutput struct {
+  Id string `json:"id"`
+	Name string `json:"name"`
   Version string  `json:"version"`
 }
 
-func formatToJson(androidVersions []usecase.AppVersion, iosVersions []usecase.AppVersion) string {
-  jsonAndroidVersionOutput := []jsonAppVersionOutput{}
-  for _, androidVersion := range androidVersions {
-    jsonAndroidVersion := jsonAppVersionOutput{
-      AppId: androidVersion.AppId,
-      Version: androidVersion.Version,
+func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
+  jsonAndroidAppOutput := []jsonAppOutput{}
+  for _, androidApp := range androidApps {
+    jsonAndroidApp := jsonAppOutput{
+      Id: androidApp.Id,
+			Name: androidApp.Name,
+      Version: androidApp.Version,
     }
-    jsonAndroidVersionOutput = append(jsonAndroidVersionOutput, jsonAndroidVersion)
+    jsonAndroidAppOutput = append(jsonAndroidAppOutput, jsonAndroidApp)
   }
-  jsonIosVersionOutput := []jsonAppVersionOutput{}
-  for _, iosVersion := range iosVersions {
-    jsonAndroidVersion := jsonAppVersionOutput{
-      AppId: iosVersion.AppId,
-      Version: iosVersion.Version,
+  jsonIosAppOutput := []jsonAppOutput{}
+  for _, iosApp := range iosApps {
+    jsonAndroidVersion := jsonAppOutput{
+      Id: iosApp.Id,
+			Name: iosApp.Name,
+      Version: iosApp.Version,
     }
-    jsonIosVersionOutput = append(jsonIosVersionOutput, jsonAndroidVersion)
+    jsonIosAppOutput = append(jsonIosAppOutput, jsonAndroidVersion)
   }
   jsonOutput := jsonOutput {
-    AndroidAppVersions: jsonAndroidVersionOutput,
-    IosAppVersions: jsonIosVersionOutput,
+    AndroidApps: jsonAndroidAppOutput,
+    IosApps: jsonIosAppOutput,
   }
   jsonBytes, err := json.Marshal(jsonOutput)
   if err != nil {

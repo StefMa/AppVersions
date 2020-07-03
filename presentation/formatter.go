@@ -16,13 +16,13 @@ https://` + domain + `?ios=ioki-hamburg/id1400408720&format=json
 https://` + domain + `?android=com.ioki.hamburg,com.ioki.wittlich&ios=ioki-hamburg/id1400408720&format=json`
 }
 
-func FormatOutput(format string, androidVersions []usecase.AppVersion, iosVersions []usecase.AppVersion) string {
+func FormatOutput(format string, androidApps []usecase.App, iosApps []usecase.App) string {
   switch format {
   case "json":
-    return formatToJson(androidVersions, iosVersions)
+    return formatToJson(androidApps, iosApps)
   case "pretty":
-    return formatToPretty(androidVersions, iosVersions)
+    return formatToPretty(androidApps, iosApps)
   default:
-    return formatToPretty(androidVersions, iosVersions)
+    return formatToPretty(androidApps, iosApps)
   }
 }

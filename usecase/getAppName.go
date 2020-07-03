@@ -7,7 +7,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func androidVersionForAppId(androidAppId string) string {
+func androidNameForAppId(androidAppId string) string {
 	url := androidUrlPrefix + androidAppId
 	resp, err := http.Get(url)
 	if err != nil {
@@ -22,16 +22,14 @@ func androidVersionForAppId(androidAppId string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	version := ""
-	doc.Find(".hAyfc .htlgb").Each(func(i int, s *goquery.Selection) {
-		if i == 6 {
-			version = s.Text()
-		}
+	name := ""
+	doc.Find(".AHFaub").Each(func(i int, s *goquery.Selection) {
+		name = s.Text()
 	})
-	return version
+	return name
 }
 
-func iosVersionForAppId(iosAppId string) string {
+func iosNameForAppId(iosAppId string) string {
 	url := iosUrlPrefix + iosAppId
 	resp, err := http.Get(url)
 	if err != nil {
@@ -46,9 +44,16 @@ func iosVersionForAppId(iosAppId string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	version := ""
-	doc.Find(".whats-new__latest__version").Each(func(i int, s *goquery.Selection) {
-		version = strings.Replace(s.Text(), "Version ", "" , -1)
+	name := ""
+	productBadge := ""
+	doc.Find(".badge--product-title").Each(func(i int, s *goquery.Selection) {
+		productBadge = s.Text()
 	})
-	return version
+	doc.Find(".product-header__title").Each(func(i int, s *goquery.Selection) {
+		name = s.Text()
+		name = strings.TrimSpace(name)
+		name = strings.TrimSuffix(name, productBadge)
+		name = strings.TrimSpace(name)
+	})
+	return name
 }
