@@ -13,16 +13,16 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	iosQuery := r.URL.Query().Get("ios")
 	format := r.URL.Query().Get("format")
 
-	androidAppVersions := []usecase.AppVersion{}
+	androidAppVersions := []usecase.App{}
 	if androidQuery != "" {
 		androidAppIds := strings.Split(androidQuery, ",")
-		androidAppVersions = usecase.AndroidVersions(androidAppIds)
+		androidAppVersions = usecase.AndroidInformation(androidAppIds)
 	}
 
-	iosAppVersions := []usecase.AppVersion{}
+	iosAppVersions := []usecase.App{}
 	if iosQuery != "" {
 		iosAppIds := strings.Split(iosQuery, ",")
-		iosAppVersions = usecase.IosVersions(iosAppIds)
+		iosAppVersions = usecase.IosInformation(iosAppIds)
 	}
 
 	if len(androidAppVersions) > 0 || len(iosAppVersions) > 0 {
