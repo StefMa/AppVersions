@@ -15,6 +15,7 @@ type App struct {
 	Id string
 	Name string
 	Version string
+	Url string
 }
 
 func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
@@ -32,6 +33,7 @@ func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
 			Id: androidApp.Id,
 			Name: androidApp.Name,
 			Version: androidApp.Version,
+			Url: androidApp.Url,
 		}
 		androidAppsTmpl = append(androidAppsTmpl, app)
 	}
@@ -41,6 +43,7 @@ func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
 			Id: iosApp.Id,
 			Name: iosApp.Name,
 			Version: iosApp.Version,
+			Url: iosApp.Url,
 		}
 		iosAppsTmpl = append(iosAppsTmpl, app)
 	}

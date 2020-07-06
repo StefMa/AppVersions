@@ -9,6 +9,7 @@ type App struct {
 	Id string
 	Name string
 	Version string
+	Url string
 }
 
 func AndroidInformation(androidAppIds []string) []App {
@@ -18,6 +19,7 @@ func AndroidInformation(androidAppIds []string) []App {
 			Id: androidAppId,
 			Name: androidNameForAppId(androidAppId),
 			Version: androidVersionForAppId(androidAppId),
+			Url: androidUrlPrefix + androidAppId,
 		}
 		apps = append(apps, app)
 	}
@@ -31,6 +33,7 @@ func IosInformation(iosAppIds []string) []App {
 			Id: iosAppId,
 			Name: iosNameForAppId(iosAppId),
 			Version: iosVersionForAppId(iosAppId),
+			Url: iosUrlPrefix + iosAppId,
 		}
 		apps = append(apps, app)
 	}
