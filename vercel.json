@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "appVersionHelper.go",
-      "use": "@now/go"
+      "use": "@now/go",
+      "config": {
+        "includeFiles": [
+          "presentation/template/*.html"
+        ]
+      }
     }
   ],
   "routes": [
