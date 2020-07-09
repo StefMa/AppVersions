@@ -10,6 +10,7 @@ import (
 type jsonOutput struct {
   AndroidApps []jsonAppOutput `json:"android,omitempty"`
   IosApps []jsonAppOutput `json:"ios,omitempty"`
+	ErrorIds []string `json:"errorIds,omitempty"`
 }
 
 type jsonAppOutput struct {
@@ -19,8 +20,13 @@ type jsonAppOutput struct {
 }
 
 func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
+	errorIds := []string{}
   jsonAndroidAppOutput := []jsonAppOutput{}
   for _, androidApp := range androidApps {
+		if androidApp.Error {
+			errorIds = append(errorIds, androidApp.Id)
+			continue
+		}
     jsonAndroidApp := jsonAppOutput{
       Id: androidApp.Id,
 			Name: androidApp.Name,
@@ -30,6 +36,10 @@ func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
   }
   jsonIosAppOutput := []jsonAppOutput{}
   for _, iosApp := range iosApps {
+		if iosApp.Error {
+			errorIds = append(errorIds, iosApp.Id)
+			continue
+		}
     jsonAndroidVersion := jsonAppOutput{
       Id: iosApp.Id,
 			Name: iosApp.Name,
@@ -40,6 +50,7 @@ func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
   jsonOutput := jsonOutput {
     AndroidApps: jsonAndroidAppOutput,
     IosApps: jsonIosAppOutput,
+		ErrorIds: errorIds,
   }
   jsonBytes, err := json.Marshal(jsonOutput)
   if err != nil {
