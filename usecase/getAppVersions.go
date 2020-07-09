@@ -7,20 +7,23 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func androidVersionForAppId(androidAppId string) string {
+func androidVersionForAppId(androidAppId string) (string, bool) {
 	url := androidUrlPrefix + androidAppId
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return "", false
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return "", false
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", false
 	}
 	version := ""
 	doc.Find(".hAyfc .htlgb").Each(func(i int, s *goquery.Selection) {
@@ -28,27 +31,30 @@ func androidVersionForAppId(androidAppId string) string {
 			version = s.Text()
 		}
 	})
-	return version
+	return version, true
 }
 
-func iosVersionForAppId(iosAppId string) string {
+func iosVersionForAppId(iosAppId string) (string, bool) {
 	url := iosUrlPrefix + iosAppId
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return "", false
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return "", false
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", false
 	}
 	version := ""
 	doc.Find(".whats-new__latest__version").Each(func(i int, s *goquery.Selection) {
 		version = strings.Replace(s.Text(), "Version ", "" , -1)
 	})
-	return version
+	return version, true
 }

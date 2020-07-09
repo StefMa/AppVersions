@@ -7,42 +7,48 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func androidNameForAppId(androidAppId string) string {
+func androidNameForAppId(androidAppId string) (string, bool) {
 	url := androidUrlPrefix + androidAppId
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return "", false
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return "", false
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", false
 	}
 	name := ""
 	doc.Find(".AHFaub").Each(func(i int, s *goquery.Selection) {
 		name = s.Text()
 	})
-	return name
+	return name, true
 }
 
-func iosNameForAppId(iosAppId string) string {
+func iosNameForAppId(iosAppId string) (string, bool) {
 	url := iosUrlPrefix + iosAppId
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return "", false
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
-		log.Fatalf("status code error: %d %s", resp.StatusCode, resp.Status)
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return "", false
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return "", false
 	}
 	name := ""
 	productBadge := ""
@@ -55,5 +61,5 @@ func iosNameForAppId(iosAppId string) string {
 		name = strings.TrimSuffix(name, productBadge)
 		name = strings.TrimSpace(name)
 	})
-	return name
+	return name, true
 }
