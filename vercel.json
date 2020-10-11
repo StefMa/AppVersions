@@ -9,6 +9,10 @@
           "presentation/template/*.html"
         ]
       }
+    },
+    {
+      "src": "favicon.ico",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
