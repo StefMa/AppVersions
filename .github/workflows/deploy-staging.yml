@@ -1,9 +1,6 @@
 name: Deploy staging
 
-on:
-  push:
-    branches:
-      - master
+on: pull_request
 
 jobs:
   deploy-staging:
@@ -13,6 +10,6 @@ jobs:
       - uses: amondnet/vercel-action@v19
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID
+          github-token: ${{ secrets.GITHUB_TOKEN }}
