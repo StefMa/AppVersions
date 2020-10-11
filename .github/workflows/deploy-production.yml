@@ -1,4 +1,4 @@
-name: Deploy staging
+name: Deploy production
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - master
 
 jobs:
-  deploy-staging:
+  deploy-production:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v19
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
