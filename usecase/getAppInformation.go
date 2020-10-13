@@ -35,14 +35,13 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, androidAppId := range androidAppIds {
 		go func(appId string) {
-			name, nameOk := androidNameForAppId(appId)
-			version, versionOk := androidVersionForAppId(appId)
+			name, version, ok := androidAppInfo(appId)
 			app := App {
 				Id: appId,
 				Name: name,
 				Version: version,
 				Url: androidUrlPrefix + appId,
-				Error: !nameOk || !versionOk,
+				Error: !ok,
 			}
 			appChannel <- app
 		}(androidAppId)
@@ -58,14 +57,13 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, iosAppId := range iosAppIds {
 		go func(appId string) {
-			name, nameOk := iosNameForAppId(appId)
-			version, versionOk := iosVersionForAppId(appId)
+			name, version, ok := iosAppInfo(appId)
 			app := App {
-				Id: iosAppId,
+				Id: appId,
 				Name: name,
 				Version: version,
-				Url: iosUrlPrefix + iosAppId,
-				Error: !nameOk || !versionOk,
+				Url: iosUrlPrefix + appId,
+				Error: !ok,
 			}
 			appChannel <- app
 		}(iosAppId)
