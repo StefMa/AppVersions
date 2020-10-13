@@ -1,6 +1,8 @@
 package usecase
 
-import ()
+import (
+	"sort"
+)
 
 const androidUrlPrefix = "https://play.google.com/store/apps/details?id="
 const iosUrlPrefix = "https://apps.apple.com/de/app/"
@@ -49,6 +51,7 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	for range androidAppIds {
 		apps = append(apps, <-appChannel)
 	}
+	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
 }
 
@@ -71,5 +74,6 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	for range iosAppIds {
 		apps = append(apps, <-appChannel)
 	}
+	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
 }
