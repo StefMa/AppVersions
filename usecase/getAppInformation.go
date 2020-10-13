@@ -1,6 +1,8 @@
 package usecase
 
-import ()
+import (
+	"sort"
+)
 
 const androidUrlPrefix = "https://play.google.com/store/apps/details?id="
 const iosUrlPrefix = "https://apps.apple.com/de/app/"
@@ -35,14 +37,13 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, androidAppId := range androidAppIds {
 		go func(appId string) {
-			name, nameOk := androidNameForAppId(appId)
-			version, versionOk := androidVersionForAppId(appId)
+			name, version, ok := androidAppInfo(appId)
 			app := App {
 				Id: appId,
 				Name: name,
 				Version: version,
 				Url: androidUrlPrefix + appId,
-				Error: !nameOk || !versionOk,
+				Error: !ok,
 			}
 			appChannel <- app
 		}(androidAppId)
@@ -50,6 +51,7 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	for range androidAppIds {
 		apps = append(apps, <-appChannel)
 	}
+	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
 }
 
@@ -58,14 +60,13 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, iosAppId := range iosAppIds {
 		go func(appId string) {
-			name, nameOk := iosNameForAppId(appId)
-			version, versionOk := iosVersionForAppId(appId)
+			name, version, ok := iosAppInfo(appId)
 			app := App {
-				Id: iosAppId,
+				Id: appId,
 				Name: name,
 				Version: version,
-				Url: iosUrlPrefix + iosAppId,
-				Error: !nameOk || !versionOk,
+				Url: iosUrlPrefix + appId,
+				Error: !ok,
 			}
 			appChannel <- app
 		}(iosAppId)
@@ -73,5 +74,6 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	for range iosAppIds {
 		apps = append(apps, <-appChannel)
 	}
+	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
 }
