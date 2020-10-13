@@ -30,36 +30,48 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	}
 }
 
-func androidInformation(androidAppIds []string, channel chan []App) {
+func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	apps := []App{}
+	appChannel := make(chan App)
 	for _, androidAppId := range androidAppIds {
-		name, nameOk := androidNameForAppId(androidAppId)
-		version, versionOk := androidVersionForAppId(androidAppId)
-		app := App {
-			Id: androidAppId,
-			Name: name,
-			Version: version,
-			Url: androidUrlPrefix + androidAppId,
-			Error: !nameOk || !versionOk,
-		}
-		apps = append(apps, app)
+		go func(appId string) {
+			name, nameOk := androidNameForAppId(appId)
+			version, versionOk := androidVersionForAppId(appId)
+			app := App {
+				Id: appId,
+				Name: name,
+				Version: version,
+				Url: androidUrlPrefix + appId,
+				Error: !nameOk || !versionOk,
+			}
+			appChannel <- app
+		}(androidAppId)
 	}
-	channel <- apps
+	for range androidAppIds {
+		apps = append(apps, <-appChannel)
+	}
+	appsChannel <- apps
 }
 
-func iosInformation(iosAppIds []string, channel chan []App) {
+func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	apps := []App{}
+	appChannel := make(chan App)
 	for _, iosAppId := range iosAppIds {
-		name, nameOk := iosNameForAppId(iosAppId)
-		version, versionOk := iosVersionForAppId(iosAppId)
-		app := App {
-			Id: iosAppId,
-			Name: name,
-			Version: version,
-			Url: iosUrlPrefix + iosAppId,
-			Error: !nameOk || !versionOk,
-		}
-		apps = append(apps, app)
+		go func(appId string) {
+			name, nameOk := iosNameForAppId(appId)
+			version, versionOk := iosVersionForAppId(appId)
+			app := App {
+				Id: iosAppId,
+				Name: name,
+				Version: version,
+				Url: iosUrlPrefix + iosAppId,
+				Error: !nameOk || !versionOk,
+			}
+			appChannel <- app
+		}(iosAppId)
 	}
-	channel <- apps
+	for range iosAppIds {
+		apps = append(apps, <-appChannel)
+	}
+	appsChannel <- apps
 }
