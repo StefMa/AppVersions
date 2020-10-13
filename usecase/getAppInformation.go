@@ -19,13 +19,18 @@ type App struct {
 }
 
 func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformation {
+	androidAppsChannel := make(chan []App)
+	iosAppsChannel := make(chan []App)
+	go androidInformation(androidAppIds, androidAppsChannel)
+	go iosInformation(iosAppIds, iosAppsChannel)
+	androidApps, iosApps := <-androidAppsChannel, <-iosAppsChannel
 	return AppsInformation {
-		AndroidApps: androidInformation(androidAppIds),
-		IosApps: iosInformation(iosAppIds),
+		AndroidApps: androidApps,
+		IosApps: iosApps,
 	}
 }
 
-func androidInformation(androidAppIds []string) []App {
+func androidInformation(androidAppIds []string, channel chan []App) {
 	apps := []App{}
 	for _, androidAppId := range androidAppIds {
 		name, nameOk := androidNameForAppId(androidAppId)
@@ -39,10 +44,10 @@ func androidInformation(androidAppIds []string) []App {
 		}
 		apps = append(apps, app)
 	}
-	return apps
+	channel <- apps
 }
 
-func iosInformation(iosAppIds []string) []App {
+func iosInformation(iosAppIds []string, channel chan []App) {
 	apps := []App{}
 	for _, iosAppId := range iosAppIds {
 		name, nameOk := iosNameForAppId(iosAppId)
@@ -56,5 +61,5 @@ func iosInformation(iosAppIds []string) []App {
 		}
 		apps = append(apps, app)
 	}
-	return apps
+	channel <- apps
 }
