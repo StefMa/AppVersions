@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"log"
 	"github.com/PuerkitoBio/goquery"
-	"io"
+	"io/ioutil"
+	"bytes"
 )
 
 func androidAppInfo(appId string) (string, string, bool) {
@@ -12,13 +13,12 @@ func androidAppInfo(appId string) (string, string, bool) {
 	if !ok {
 		return appId, "", false
 	}
-	defer body.Close()
 	name, nameOk := androidNameForAppId(appId, body)
 	version, versionOk := androidVersionForAppId(appId, body)
 	return name, version, nameOk && versionOk
 }
 
-func fetchAndroidWebsite(appId string) (io.ReadCloser, bool) {
+func fetchAndroidWebsite(appId string) ([]byte, bool) {
 	url := androidUrlPrefix + appId
 	resp, err := http.Get(url)
 	if err != nil {
@@ -29,11 +29,17 @@ func fetchAndroidWebsite(appId string) (io.ReadCloser, bool) {
 		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
 		return nil, false
 	}
-	return resp.Body, true
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	return bodyBytes, true
 }
 
-func androidNameForAppId(androidAppId string, body io.ReadCloser) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(body)
+func androidNameForAppId(androidAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
 	if err != nil {
 		log.Println(err)
 		return "", false
@@ -45,8 +51,8 @@ func androidNameForAppId(androidAppId string, body io.ReadCloser) (string, bool)
 	return name, true
 }
 
-func androidVersionForAppId(androidAppId string, body io.ReadCloser) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(body)
+func androidVersionForAppId(androidAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
 	if err != nil {
 		log.Println(err)
 		return "", false

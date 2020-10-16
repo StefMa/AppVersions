@@ -5,7 +5,8 @@ import (
 	"log"
 	"strings"
 	"github.com/PuerkitoBio/goquery"
-	"io"
+	"io/ioutil"
+	"bytes"
 )
 
 func iosAppInfo(appId string) (string, string, bool) {
@@ -13,13 +14,12 @@ func iosAppInfo(appId string) (string, string, bool) {
 	if !ok {
 		return appId, "", false
 	}
-	defer body.Close()
 	name, nameOk := iosNameForAppId(appId, body)
 	version, versionOk := iosVersionForAppId(appId, body)
 	return name, version, nameOk && versionOk
 }
 
-func fetchIosWebsite(appId string) (io.ReadCloser, bool) {
+func fetchIosWebsite(appId string) ([]byte, bool) {
 	url := iosUrlPrefix + appId
 	resp, err := http.Get(url)
 	if err != nil {
@@ -30,11 +30,17 @@ func fetchIosWebsite(appId string) (io.ReadCloser, bool) {
 		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
 		return nil, false
 	}
-	return resp.Body, true
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	return bodyBytes, true
 }
 
-func iosVersionForAppId(iosAppId string, body io.ReadCloser) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(body)
+func iosVersionForAppId(iosAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
 	if err != nil {
 		log.Println(err)
 		return "", false
@@ -46,8 +52,8 @@ func iosVersionForAppId(iosAppId string, body io.ReadCloser) (string, bool) {
 	return version, true
 }
 
-func iosNameForAppId(iosAppId string, body io.ReadCloser) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(body)
+func iosNameForAppId(iosAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
 	if err != nil {
 		log.Println(err)
 		return "", false
