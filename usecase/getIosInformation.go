@@ -9,14 +9,15 @@ import (
 	"bytes"
 )
 
-func iosAppInfo(appId string) (string, string, bool) {
+func iosAppInfo(appId string) (string, string, string, bool) {
 	body, ok := fetchIosWebsite(appId)
 	if !ok {
-		return appId, "", false
+		return appId, "", "", false
 	}
 	name, nameOk := iosNameForAppId(appId, body)
 	version, versionOk := iosVersionForAppId(appId, body)
-	return name, version, nameOk && versionOk
+	rating, ratingOk := iosRatingForAppId(appId, body)
+	return name, version, rating, nameOk && versionOk && ratingOk
 }
 
 func fetchIosWebsite(appId string) ([]byte, bool) {
@@ -70,4 +71,17 @@ func iosNameForAppId(iosAppId string, body []byte) (string, bool) {
 		name = strings.TrimSpace(name)
 	})
 	return name, true
+}
+
+func iosRatingForAppId(iosAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	rating := ""
+	doc.Find(".we-customer-ratings__averages__display").Each(func(i int, s *goquery.Selection) {
+	 	rating = s.Text()
+	})
+	return rating, true
 }

@@ -8,14 +8,15 @@ import (
 	"bytes"
 )
 
-func androidAppInfo(appId string) (string, string, bool) {
+func androidAppInfo(appId string) (string, string, string, bool) {
 	body, ok := fetchAndroidWebsite(appId)
 	if !ok {
-		return appId, "", false
+		return appId, "", "", false
 	}
 	name, nameOk := androidNameForAppId(appId, body)
 	version, versionOk := androidVersionForAppId(appId, body)
-	return name, version, nameOk && versionOk
+	rating, ratingOk := androidRatingForAppId(appId, body)
+	return name, version, rating, nameOk && versionOk && ratingOk
 }
 
 func fetchAndroidWebsite(appId string) ([]byte, bool) {
@@ -64,4 +65,17 @@ func androidVersionForAppId(androidAppId string, body []byte) (string, bool) {
 		}
 	})
 	return version, true
+}
+
+func androidRatingForAppId(androidAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	rating := ""
+	doc.Find(".BHMmbe").Each(func(i int, s *goquery.Selection) {
+	 	rating = s.Text()
+	})
+	return rating, true
 }

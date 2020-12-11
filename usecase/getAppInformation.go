@@ -16,6 +16,7 @@ type App struct {
 	Id string
 	Name string
 	Version string
+	Rating string
 	Url string
 	Error bool
 }
@@ -37,11 +38,12 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, androidAppId := range androidAppIds {
 		go func(appId string) {
-			name, version, ok := androidAppInfo(appId)
+			name, version, rating, ok := androidAppInfo(appId)
 			app := App {
 				Id: appId,
 				Name: name,
 				Version: version,
+				Rating: rating,
 				Url: androidUrlPrefix + appId,
 				Error: !ok,
 			}
@@ -60,11 +62,12 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, iosAppId := range iosAppIds {
 		go func(appId string) {
-			name, version, ok := iosAppInfo(appId)
+			name, version, rating, ok := iosAppInfo(appId)
 			app := App {
 				Id: appId,
 				Name: name,
 				Version: version,
+				Rating: rating,
 				Url: iosUrlPrefix + appId,
 				Error: !ok,
 			}
