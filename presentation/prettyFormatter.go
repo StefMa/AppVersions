@@ -20,7 +20,7 @@ type App struct {
 }
 
 func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
-	tmpl := template.Must(template.ParseFiles("presentation/template/pretty.html"))
+	tmpl := template.Must(template.ParseGlob("presentation/template/pretty*.html"))
 	androidAppsTmpl := []App{}
 	for _, androidApp := range androidApps {
 		var name string
