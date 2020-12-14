@@ -15,12 +15,16 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 
 	var androidAppIds []string
 	if androidQuery != "" {
-		androidAppIds = strings.Split(androidQuery, ",")
+		for _, androidAppId := range strings.Split(androidQuery, ",") {
+			androidAppIds = append(androidAppIds, strings.TrimSpace(androidAppId))
+		}
 	}
 
 	var iosAppIds []string
 	if iosQuery != "" {
-		iosAppIds = strings.Split(iosQuery, ",")
+		for _, iosAppId := range strings.Split(iosQuery, ",") {
+			iosAppIds = append(iosAppIds, strings.TrimSpace(iosAppId))
+		}
 	}
 
 	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
