@@ -1,0 +1,27 @@
+{{ define "prettyCardContent" }}
+<p class="title is-5">
+  {{ .Name }}
+</p>
+<p class="subtitle is-6">
+  {{ .Id }}
+</p>
+<div class="content">
+  <div class="field is-grouped is-grouped-multiline">
+    <div class="control">
+      <div class="tags has-addons">
+        <span class="tag is-dark">Version</span>
+        <span class="tag is-light">{{ .Version }}</span>
+      </div>
+    </div>
+
+    {{ if .Rating }}
+      <div class="control">
+        <div class="tags has-addons">
+          <span class="tag is-dark">Rating</span>
+          <span class="tag is-light">{{ .Rating }}</span>
+        </div>
+      </div>
+    {{ end }}
+  </div>
+</div>
+{{end}}
