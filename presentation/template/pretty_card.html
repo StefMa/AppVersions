@@ -17,12 +17,14 @@
             </div>
           </div>
 
-          <div class="control">
-            <div class="tags has-addons">
-              <span class="tag is-dark">Rating</span>
-              <span class="tag is-light">{{ .Rating }}</span>
+          {{ if .Rating }}
+            <div class="control">
+              <div class="tags has-addons">
+                <span class="tag is-dark">Rating</span>
+                <span class="tag is-light">{{ .Rating }}</span>
+              </div>
             </div>
-          </div>
+          {{ end }}
         </div>
       </div>
     </div>
