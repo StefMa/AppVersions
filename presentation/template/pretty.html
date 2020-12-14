@@ -18,7 +18,11 @@
         </p>
         <div class="columns is-multiline">
           {{ range .AndroidApps }}
-            {{ template "prettyCard" . }}
+            {{ if .Error }}
+              {{ template "prettyCardError" . }}
+            {{ else }}
+              {{ template "prettyCard" . }}
+            {{ end }}
           {{ end }}
         </div>
       </div>
@@ -35,7 +39,11 @@
         </p>
         <div class="columns is-multiline">
           {{ range .IosApps}}
-            {{ template "prettyCard" . }}
+            {{ if .Error }}
+              {{ template "prettyCardError" . }}
+            {{ else }}
+              {{ template "prettyCard" . }}
+            {{ end }}
           {{ end }}
         </div>
       </div>
