@@ -1,0 +1,13 @@
+{{ define "prettyCard" }}
+<a href="{{.Url}}" class="card column is-narrow" style="margin: 8px;">
+  <div>
+    <div class="card-content" style="width: 300px;">
+      {{ if .Error }}
+        {{ template "prettyCardContentError" . }}
+      {{ else }}
+        {{ template "prettyCardContent" . }}
+      {{ end }}
+    </div>
+  </div>
+</a>
+{{end}}

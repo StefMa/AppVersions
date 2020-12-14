@@ -17,6 +17,8 @@ type jsonAppOutput struct {
   Id string `json:"id"`
 	Name string `json:"name"`
   Version string  `json:"version"`
+	Rating string  `json:"rating"`
+	Url string `json:"url"`
 }
 
 func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
@@ -31,6 +33,8 @@ func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
       Id: androidApp.Id,
 			Name: androidApp.Name,
       Version: androidApp.Version,
+			Rating: androidApp.Rating,
+			Url: androidApp.Url,
     }
     jsonAndroidAppOutput = append(jsonAndroidAppOutput, jsonAndroidApp)
   }
@@ -44,6 +48,8 @@ func formatToJson(androidApps []usecase.App, iosApps []usecase.App) string {
       Id: iosApp.Id,
 			Name: iosApp.Name,
       Version: iosApp.Version,
+			Rating: iosApp.Rating,
+			Url: iosApp.Url,
     }
     jsonIosAppOutput = append(jsonIosAppOutput, jsonAndroidVersion)
   }

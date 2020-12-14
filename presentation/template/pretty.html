@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>App Versions</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.13.1/js/all.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   </head>
   <body>
@@ -16,23 +17,9 @@
           Android
         </p>
         <div class="columns is-multiline">
-          {{range .AndroidApps}}
-          <a href="{{.Url}}" class="card column is-narrow" style="margin: 8px;">
-          <div>
-            <div class="card-content" style="width: 300px;">
-              <p class="title is-5">
-                {{.Name}}
-              </p>
-              <p class="subtitle is-6">
-                {{.Id}}
-              </p>
-              <div class="content">
-                {{.Version}}
-              </div>
-            </div>
-          </div>
-          </a>
-          {{end}}
+          {{ range .AndroidApps }}
+            {{ template "prettyCard" . }}
+          {{ end }}
         </div>
       </div>
     {{ end }}
@@ -47,23 +34,9 @@
           iOS
         </p>
         <div class="columns is-multiline">
-          {{range .IosApps}}
-          <a href="{{.Url}}" class="card column is-narrow" style="margin: 8px;">
-          <div>
-            <div class="card-content" style="width: 300px;">
-              <p class="title is-5">
-                {{.Name}}
-              </p>
-              <p class="subtitle is-6">
-                {{.Id}}
-              </p>
-              <div class="content">
-                {{.Version}}
-              </div>
-            </div>
-          </div>
-          </a>
-          {{end}}
+          {{ range .IosApps}}
+            {{ template "prettyCard" . }}
+          {{ end }}
         </div>
       </div>
     {{ end }}
