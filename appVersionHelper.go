@@ -25,8 +25,8 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 
 	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
 		appsInformation := usecase.GetAppsInformation(androidAppIds, iosAppIds)
-		fmt.Fprintf(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
+		fmt.Fprint(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
 	} else {
-		fmt.Fprintf(w, "%s", presentation.Index())
+		fmt.Fprint(w, presentation.Index())
 	}
 }
