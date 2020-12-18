@@ -14,17 +14,19 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	format := r.URL.Query().Get("format")
 
 	var androidAppIds []string
-	if androidQuery != "" {
-		for _, androidAppId := range strings.Split(androidQuery, ",") {
-			androidAppIds = append(androidAppIds, strings.TrimSpace(androidAppId))
-		}
+	if !isPublisher(androidQuery) {
+		androidAppIds = getAppIds(androidQuery)
+	} else {
+		//androidPublisher := extractPublisher(androidQuery)
+		// TODO: Get androidAppIds from androidPublisher
 	}
 
 	var iosAppIds []string
-	if iosQuery != "" {
-		for _, iosAppId := range strings.Split(iosQuery, ",") {
-			iosAppIds = append(iosAppIds, strings.TrimSpace(iosAppId))
-		}
+	if !isPublisher(iosQuery) {
+		iosAppIds = getAppIds(iosQuery)
+	} else {
+		//iosPublisher := extractPublisher(iosQuery)
+		// TODO: Get iosAppIds from  iosPublisher
 	}
 
 	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
@@ -33,4 +35,22 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	} else {
 		fmt.Fprint(w, presentation.Index())
 	}
+}
+
+func isPublisher(query string) bool {
+	return strings.HasPrefix(query, "pub:")
+}
+
+func extractPublisher(query string) string {
+	return strings.TrimPrefix(query, "pub:")
+}
+
+func getAppIds(query string) []string {
+	var appIds []string
+	if query != "" {
+		for _, appId := range strings.Split(query, ",") {
+			appIds = append(appIds, strings.TrimSpace(appId))
+		}
+	}
+	return appIds
 }
