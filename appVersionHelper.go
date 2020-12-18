@@ -17,16 +17,16 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	if !isPublisher(androidQuery) {
 		androidAppIds = getAppIds(androidQuery)
 	} else {
-		//androidPublisher := extractPublisher(androidQuery)
-		// TODO: Get androidAppIds from androidPublisher
+		androidPublisher := extractPublisher(androidQuery)
+		androidAppIds = usecase.GetAndroidPublisherAppIds(androidPublisher)
 	}
 
 	var iosAppIds []string
 	if !isPublisher(iosQuery) {
 		iosAppIds = getAppIds(iosQuery)
 	} else {
-		//iosPublisher := extractPublisher(iosQuery)
-		// TODO: Get iosAppIds from  iosPublisher
+		iosPublisher := extractPublisher(iosQuery)
+		iosAppIds = usecase.GetIosPublisherAppIds(iosPublisher)
 	}
 
 	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
