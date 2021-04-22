@@ -9,15 +9,16 @@ import (
 	"strings"
 )
 
-func iosAppInfo(appId string) (string, string, string, bool) {
+func iosAppInfo(appId string) (string, string, string, string, bool) {
 	body, ok := fetchIosWebsite(appId)
 	if !ok {
-		return appId, "", "", false
+		return appId, "", "", "", false
 	}
 	name, nameOk := iosNameForAppId(appId, body)
 	version, versionOk := iosVersionForAppId(appId, body)
 	rating, ratingOk := iosRatingForAppId(appId, body)
-	return name, version, rating, nameOk && versionOk && ratingOk
+	imgSrc, imgOk := iosImageSrcForAppid(appId, body)
+	return name, version, rating, imgSrc, nameOk && versionOk && ratingOk && imgOk
 }
 
 func fetchIosWebsite(appId string) ([]byte, bool) {
@@ -84,4 +85,20 @@ func iosRatingForAppId(iosAppId string, body []byte) (string, bool) {
 		rating = s.Text()
 	})
 	return rating, true
+}
+
+func iosImageSrcForAppid(iosAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	imgSrc := ""
+	doc.Find(".product-hero__artwork").Each(func(i int, s *goquery.Selection) {
+		imgSrcSet, _ := s.Children().Eq(1).Attr("srcset")
+		imgSrc = strings.Split(imgSrcSet, ",")[1]
+		imgSrc = strings.TrimSuffix(imgSrc, " 2x")
+		imgSrc = strings.TrimSpace(imgSrc)
+	})
+	return imgSrc, true
 }

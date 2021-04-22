@@ -8,15 +8,16 @@ import (
 	"net/http"
 )
 
-func androidAppInfo(appId string) (string, string, string, bool) {
+func androidAppInfo(appId string) (string, string, string, string, bool) {
 	body, ok := fetchAndroidWebsite(appId)
 	if !ok {
-		return appId, "", "", false
+		return appId, "", "", "", false
 	}
 	name, nameOk := androidNameForAppId(appId, body)
 	version, versionOk := androidVersionForAppId(appId, body)
 	rating, ratingOk := androidRatingForAppId(appId, body)
-	return name, version, rating, nameOk && versionOk && ratingOk
+	imgSrc, imgOk := androidImageSrcForAppid(appId, body)
+	return name, version, rating, imgSrc, nameOk && versionOk && ratingOk && imgOk
 }
 
 func fetchAndroidWebsite(appId string) ([]byte, bool) {
@@ -78,4 +79,17 @@ func androidRatingForAppId(androidAppId string, body []byte) (string, bool) {
 		rating = s.Text()
 	})
 	return rating, true
+}
+
+func androidImageSrcForAppid(androidAppId string, body []byte) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	imgSrc := ""
+	doc.Find(".sHb2Xb").Each(func(i int, s *goquery.Selection) {
+		imgSrc, _ = s.Attr("src")
+	})
+	return imgSrc, true
 }
