@@ -13,12 +13,13 @@ type AppsInformation struct {
 }
 
 type App struct {
-	Id      string
-	Name    string
-	Version string
-	Rating  string
-	Url     string
-	Error   bool
+	Id       string
+	Name     string
+	Version  string
+	Rating   string
+	Url      string
+	ImageSrc string
+	Error    bool
 }
 
 func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformation {
@@ -38,14 +39,15 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, androidAppId := range androidAppIds {
 		go func(appId string) {
-			name, version, rating, ok := androidAppInfo(appId)
+			name, version, rating, imgSrc, ok := androidAppInfo(appId)
 			app := App{
-				Id:      appId,
-				Name:    name,
-				Version: version,
-				Rating:  rating,
-				Url:     androidUrlPrefix + appId,
-				Error:   !ok,
+				Id:       appId,
+				Name:     name,
+				Version:  version,
+				Rating:   rating,
+				Url:      androidUrlPrefix + appId,
+				ImageSrc: imgSrc,
+				Error:    !ok,
 			}
 			appChannel <- app
 		}(androidAppId)
@@ -62,14 +64,15 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	appChannel := make(chan App)
 	for _, iosAppId := range iosAppIds {
 		go func(appId string) {
-			name, version, rating, ok := iosAppInfo(appId)
+			name, version, rating, imgSrc, ok := iosAppInfo(appId)
 			app := App{
-				Id:      appId,
-				Name:    name,
-				Version: version,
-				Rating:  rating,
-				Url:     iosUrlPrefix + appId,
-				Error:   !ok,
+				Id:       appId,
+				Name:     name,
+				Version:  version,
+				Rating:   rating,
+				Url:      iosUrlPrefix + appId,
+				ImageSrc: imgSrc,
+				Error:    !ok,
 			}
 			appChannel <- app
 		}(iosAppId)
