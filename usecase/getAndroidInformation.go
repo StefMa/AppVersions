@@ -1,11 +1,11 @@
 package usecase
 
 import (
-	"net/http"
-	"log"
+	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
-	"bytes"
+	"log"
+	"net/http"
 )
 
 func androidAppInfo(appId string) (string, string, string, bool) {
@@ -75,7 +75,7 @@ func androidRatingForAppId(androidAppId string, body []byte) (string, bool) {
 	}
 	rating := ""
 	doc.Find(".BHMmbe").Each(func(i int, s *goquery.Selection) {
-	 	rating = s.Text()
+		rating = s.Text()
 	})
 	return rating, true
 }

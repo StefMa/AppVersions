@@ -3,9 +3,9 @@ package handler
 import (
 	"fmt"
 	"net/http"
-	"strings"
-	"stefma.guru/appVersions/usecase"
 	"stefma.guru/appVersions/presentation"
+	"stefma.guru/appVersions/usecase"
+	"strings"
 )
 
 func HandleFunc(w http.ResponseWriter, r *http.Request) {

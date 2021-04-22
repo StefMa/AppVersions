@@ -1,23 +1,23 @@
 package presentation
 
 import (
-	"stefma.guru/appVersions/usecase"
-	"html/template"
 	"bytes"
+	"html/template"
+	"stefma.guru/appVersions/usecase"
 )
 
 type TemplateModel struct {
 	AndroidApps []App
-	IosApps []App
+	IosApps     []App
 }
 
 type App struct {
-	Id string
-	Name string
+	Id      string
+	Name    string
 	Version string
-	Rating string
-	Url string
-	Error bool
+	Rating  string
+	Url     string
+	Error   bool
 }
 
 func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
@@ -25,32 +25,32 @@ func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
 	androidAppsTmpl := []App{}
 	for _, androidApp := range androidApps {
 		app := App{
-			Id: androidApp.Id,
-			Name: androidApp.Name,
+			Id:      androidApp.Id,
+			Name:    androidApp.Name,
 			Version: androidApp.Version,
-			Rating: androidApp.Rating,
-			Url: androidApp.Url,
-			Error: androidApp.Error,
+			Rating:  androidApp.Rating,
+			Url:     androidApp.Url,
+			Error:   androidApp.Error,
 		}
 		androidAppsTmpl = append(androidAppsTmpl, app)
 	}
 	iosAppsTmpl := []App{}
 	for _, iosApp := range iosApps {
 		app := App{
-			Id: iosApp.Id,
-			Name: iosApp.Name,
+			Id:      iosApp.Id,
+			Name:    iosApp.Name,
 			Version: iosApp.Version,
-			Rating: iosApp.Rating,
-			Url: iosApp.Url,
-			Error: iosApp.Error,
+			Rating:  iosApp.Rating,
+			Url:     iosApp.Url,
+			Error:   iosApp.Error,
 		}
 		iosAppsTmpl = append(iosAppsTmpl, app)
 	}
-	tmplModel := TemplateModel {
+	tmplModel := TemplateModel{
 		AndroidApps: androidAppsTmpl,
-		IosApps: iosAppsTmpl,
+		IosApps:     iosAppsTmpl,
 	}
 	var tpl bytes.Buffer
 	tmpl.Execute(&tpl, tmplModel)
-  return tpl.String()
+	return tpl.String()
 }

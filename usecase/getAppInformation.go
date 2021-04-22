@@ -9,16 +9,16 @@ const iosUrlPrefix = "https://apps.apple.com/de/app/"
 
 type AppsInformation struct {
 	AndroidApps []App
-	IosApps []App
+	IosApps     []App
 }
 
 type App struct {
-	Id string
-	Name string
+	Id      string
+	Name    string
 	Version string
-	Rating string
-	Url string
-	Error bool
+	Rating  string
+	Url     string
+	Error   bool
 }
 
 func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformation {
@@ -27,9 +27,9 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	go androidInformation(androidAppIds, androidAppsChannel)
 	go iosInformation(iosAppIds, iosAppsChannel)
 	androidApps, iosApps := <-androidAppsChannel, <-iosAppsChannel
-	return AppsInformation {
+	return AppsInformation{
 		AndroidApps: androidApps,
-		IosApps: iosApps,
+		IosApps:     iosApps,
 	}
 }
 
@@ -39,13 +39,13 @@ func androidInformation(androidAppIds []string, appsChannel chan []App) {
 	for _, androidAppId := range androidAppIds {
 		go func(appId string) {
 			name, version, rating, ok := androidAppInfo(appId)
-			app := App {
-				Id: appId,
-				Name: name,
+			app := App{
+				Id:      appId,
+				Name:    name,
 				Version: version,
-				Rating: rating,
-				Url: androidUrlPrefix + appId,
-				Error: !ok,
+				Rating:  rating,
+				Url:     androidUrlPrefix + appId,
+				Error:   !ok,
 			}
 			appChannel <- app
 		}(androidAppId)
@@ -63,13 +63,13 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	for _, iosAppId := range iosAppIds {
 		go func(appId string) {
 			name, version, rating, ok := iosAppInfo(appId)
-			app := App {
-				Id: appId,
-				Name: name,
+			app := App{
+				Id:      appId,
+				Name:    name,
 				Version: version,
-				Rating: rating,
-				Url: iosUrlPrefix + appId,
-				Error: !ok,
+				Rating:  rating,
+				Url:     iosUrlPrefix + appId,
+				Error:   !ok,
 			}
 			appChannel <- app
 		}(iosAppId)

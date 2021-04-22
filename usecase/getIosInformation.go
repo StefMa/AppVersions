@@ -1,12 +1,12 @@
 package usecase
 
 import (
-	"net/http"
-	"log"
-	"strings"
+	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
-	"bytes"
+	"log"
+	"net/http"
+	"strings"
 )
 
 func iosAppInfo(appId string) (string, string, string, bool) {
@@ -48,7 +48,7 @@ func iosVersionForAppId(iosAppId string, body []byte) (string, bool) {
 	}
 	version := ""
 	doc.Find(".whats-new__latest__version").Each(func(i int, s *goquery.Selection) {
-		version = strings.Replace(s.Text(), "Version ", "" , -1)
+		version = strings.Replace(s.Text(), "Version ", "", -1)
 	})
 	return version, true
 }
@@ -81,7 +81,7 @@ func iosRatingForAppId(iosAppId string, body []byte) (string, bool) {
 	}
 	rating := ""
 	doc.Find(".we-customer-ratings__averages__display").Each(func(i int, s *goquery.Selection) {
-	 	rating = s.Text()
+		rating = s.Text()
 	})
 	return rating, true
 }
