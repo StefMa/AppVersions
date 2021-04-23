@@ -1,7 +1,6 @@
 package usecase
 
 import (
-	"bytes"
 	"github.com/PuerkitoBio/goquery"
 	"io/ioutil"
 	"log"
@@ -13,10 +12,10 @@ func androidAppInfo(appId string) (string, string, string, string, bool) {
 	if !ok {
 		return appId, "", "", "", false
 	}
-	name, nameOk := androidNameForAppId(appId, body)
-	version, versionOk := androidVersionForAppId(appId, body)
-	rating, ratingOk := androidRatingForAppId(appId, body)
-	imgSrc, imgOk := androidImageSrcForAppid(appId, body)
+	name, nameOk := androidName(body)
+	version, versionOk := androidVersion(body)
+	rating, ratingOk := androidRating(body)
+	imgSrc, imgOk := androidImageSrc(body)
 	return name, version, rating, imgSrc, nameOk && versionOk && ratingOk && imgOk
 }
 
@@ -40,56 +39,30 @@ func fetchAndroidWebsite(appId string) ([]byte, bool) {
 	return bodyBytes, true
 }
 
-func androidNameForAppId(androidAppId string, body []byte) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-	name := ""
-	doc.Find(".AHFaub").Each(func(i int, s *goquery.Selection) {
-		name = s.Text()
+func androidName(body []byte) (string, bool) {
+	return extractInformation(body, ".AHFaub", func(i int, s *goquery.Selection) string {
+		return s.Text()
 	})
-	return name, true
 }
 
-func androidVersionForAppId(androidAppId string, body []byte) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-	version := ""
-	doc.Find(".hAyfc .htlgb").Each(func(i int, s *goquery.Selection) {
+func androidVersion(body []byte) (string, bool) {
+	return extractInformation(body, ".hAyfc .htlgb", func(i int, s *goquery.Selection) string {
 		if i == 6 {
-			version = s.Text()
+			return s.Text()
 		}
+		return ""
 	})
-	return version, true
 }
 
-func androidRatingForAppId(androidAppId string, body []byte) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-	rating := ""
-	doc.Find(".BHMmbe").Each(func(i int, s *goquery.Selection) {
-		rating = s.Text()
+func androidRating(body []byte) (string, bool) {
+	return extractInformation(body, ".BHMmbe", func(i int, s *goquery.Selection) string {
+		return s.Text()
 	})
-	return rating, true
 }
 
-func androidImageSrcForAppid(androidAppId string, body []byte) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-	imgSrc := ""
-	doc.Find(".sHb2Xb").Each(func(i int, s *goquery.Selection) {
-		imgSrc, _ = s.Attr("src")
+func androidImageSrc(body []byte) (string, bool) {
+	return extractInformation(body, ".sHb2Xb", func(i int, s *goquery.Selection) string {
+		imgSrc, _ := s.Attr("src")
+		return imgSrc
 	})
-	return imgSrc, true
 }

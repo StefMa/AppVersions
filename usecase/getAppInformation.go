@@ -1,6 +1,9 @@
 package usecase
 
 import (
+	"bytes"
+	"github.com/PuerkitoBio/goquery"
+	"log"
 	"sort"
 )
 
@@ -82,4 +85,20 @@ func iosInformation(iosAppIds []string, appsChannel chan []App) {
 	}
 	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
+}
+
+func extractInformation(body []byte, htmlClass string, selector func(int, *goquery.Selection) string) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	selectorResult := ""
+	doc.Find(htmlClass).Each(func(i int, s *goquery.Selection) {
+		selectorResult = selector(i, s)
+	})
+	if selectorResult == "" {
+		log.Println("selectorResult is empty. Wrong selector?!")
+	}
+	return selectorResult, true
 }
