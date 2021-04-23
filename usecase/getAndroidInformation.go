@@ -7,16 +7,32 @@ import (
 	"net/http"
 )
 
-func androidAppInfo(appId string) (string, string, string, string, bool) {
+func androidAppInfo(appId string) App {
 	body, ok := fetchAndroidWebsite(appId)
 	if !ok {
-		return appId, "", "", "", false
+		return App{
+			Id:       appId,
+			Name:     "",
+			Version:  "",
+			Rating:   "",
+			Url:      androidUrlPrefix + appId,
+			ImageSrc: "",
+			Error:    true,
+		}
 	}
 	name, nameOk := androidName(body)
 	version, versionOk := androidVersion(body)
 	rating, ratingOk := androidRating(body)
 	imgSrc, imgOk := androidImageSrc(body)
-	return name, version, rating, imgSrc, nameOk && versionOk && ratingOk && imgOk
+	return App{
+		Id:       appId,
+		Name:     name,
+		Version:  version,
+		Rating:   rating,
+		Url:      androidUrlPrefix + appId,
+		ImageSrc: imgSrc,
+		Error:    nameOk && versionOk && ratingOk && imgOk,
+	}
 }
 
 func fetchAndroidWebsite(appId string) ([]byte, bool) {

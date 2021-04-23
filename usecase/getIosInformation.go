@@ -8,16 +8,32 @@ import (
 	"strings"
 )
 
-func iosAppInfo(appId string) (string, string, string, string, bool) {
+func iosAppInfo(appId string) App {
 	body, ok := fetchIosWebsite(appId)
 	if !ok {
-		return appId, "", "", "", false
+		return App{
+			Id:       appId,
+			Name:     "",
+			Version:  "",
+			Rating:   "",
+			Url:      androidUrlPrefix + appId,
+			ImageSrc: "",
+			Error:    true,
+		}
 	}
 	name, nameOk := iosName(body)
 	version, versionOk := iosVersion(body)
 	rating, ratingOk := iosRating(body)
 	imgSrc, imgOk := iosImageSrc(body)
-	return name, version, rating, imgSrc, nameOk && versionOk && ratingOk && imgOk
+	return App{
+		Id:       appId,
+		Name:     name,
+		Version:  version,
+		Rating:   rating,
+		Url:      androidUrlPrefix + appId,
+		ImageSrc: imgSrc,
+		Error:    nameOk && versionOk && ratingOk && imgOk,
+	}
 }
 
 func fetchIosWebsite(appId string) ([]byte, bool) {
