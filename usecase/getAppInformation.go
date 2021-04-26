@@ -3,7 +3,7 @@ package usecase
 import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"sort"
@@ -51,7 +51,7 @@ func fetchWebsite(url string) ([]byte, bool) {
 		return nil, false
 	}
 	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Println(err)
 		return nil, false
