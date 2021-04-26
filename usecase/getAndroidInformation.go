@@ -2,13 +2,12 @@ package usecase
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"io/ioutil"
-	"log"
-	"net/http"
 )
 
+const androidUrlPrefix = "https://play.google.com/store/apps/details?id="
+
 func androidAppInfo(appId string) App {
-	body, ok := fetchAndroidWebsite(appId)
+	body, ok := fetchWebsite(androidUrlPrefix + appId)
 	if !ok {
 		return App{
 			Id:       appId,
@@ -33,26 +32,6 @@ func androidAppInfo(appId string) App {
 		ImageSrc: imgSrc,
 		Error:    !(nameOk && versionOk && ratingOk && imgOk),
 	}
-}
-
-func fetchAndroidWebsite(appId string) ([]byte, bool) {
-	url := androidUrlPrefix + appId
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Println(err)
-		return nil, false
-	}
-	if resp.StatusCode != 200 {
-		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
-		return nil, false
-	}
-	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-		return nil, false
-	}
-	return bodyBytes, true
 }
 
 func androidName(body []byte) (string, bool) {

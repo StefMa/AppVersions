@@ -2,14 +2,13 @@ package usecase
 
 import (
 	"github.com/PuerkitoBio/goquery"
-	"io/ioutil"
-	"log"
-	"net/http"
 	"strings"
 )
 
+const iosUrlPrefix = "https://apps.apple.com/de/app/"
+
 func iosAppInfo(appId string) App {
-	body, ok := fetchIosWebsite(appId)
+	body, ok := fetchWebsite(iosUrlPrefix + appId)
 	if !ok {
 		return App{
 			Id:       appId,
@@ -34,26 +33,6 @@ func iosAppInfo(appId string) App {
 		ImageSrc: imgSrc,
 		Error:    !(nameOk && versionOk && ratingOk && imgOk),
 	}
-}
-
-func fetchIosWebsite(appId string) ([]byte, bool) {
-	url := iosUrlPrefix + appId
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Println(err)
-		return nil, false
-	}
-	if resp.StatusCode != 200 {
-		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
-		return nil, false
-	}
-	defer resp.Body.Close()
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-		return nil, false
-	}
-	return bodyBytes, true
 }
 
 func iosVersion(body []byte) (string, bool) {

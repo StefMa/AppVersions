@@ -3,12 +3,11 @@ package usecase
 import (
 	"bytes"
 	"github.com/PuerkitoBio/goquery"
+	"io/ioutil"
 	"log"
+	"net/http"
 	"sort"
 )
-
-const androidUrlPrefix = "https://play.google.com/store/apps/details?id="
-const iosUrlPrefix = "https://apps.apple.com/de/app/"
 
 type AppsInformation struct {
 	AndroidApps []App
@@ -39,6 +38,25 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 		AndroidApps: androidApps,
 		IosApps:     iosApps,
 	}
+}
+
+func fetchWebsite(url string) ([]byte, bool) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	if resp.StatusCode != 200 {
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return nil, false
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	return bodyBytes, true
 }
 
 func appInformation(appIds []string, appsChannel chan []App, f func(appId string) App) {
