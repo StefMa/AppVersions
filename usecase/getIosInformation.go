@@ -16,7 +16,7 @@ func iosAppInfo(appId string) App {
 			Name:     "",
 			Version:  "",
 			Rating:   "",
-			Url:      androidUrlPrefix + appId,
+			Url:      iosUrlPrefix + appId,
 			ImageSrc: "",
 			Error:    true,
 		}
@@ -30,9 +30,9 @@ func iosAppInfo(appId string) App {
 		Name:     name,
 		Version:  version,
 		Rating:   rating,
-		Url:      androidUrlPrefix + appId,
+		Url:      iosUrlPrefix + appId,
 		ImageSrc: imgSrc,
-		Error:    nameOk && versionOk && ratingOk && imgOk,
+		Error:    !(nameOk && versionOk && ratingOk && imgOk),
 	}
 }
 

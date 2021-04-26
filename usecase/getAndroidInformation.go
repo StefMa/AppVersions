@@ -31,7 +31,7 @@ func androidAppInfo(appId string) App {
 		Rating:   rating,
 		Url:      androidUrlPrefix + appId,
 		ImageSrc: imgSrc,
-		Error:    nameOk && versionOk && ratingOk && imgOk,
+		Error:    !(nameOk && versionOk && ratingOk && imgOk),
 	}
 }
 
