@@ -63,8 +63,9 @@ func extractInformation(body []byte, htmlClass string, selector func(int, *goque
 		return "", false
 	}
 	selectorResult := ""
-	doc.Find(htmlClass).Each(func(i int, s *goquery.Selection) {
+	doc.Find(htmlClass).EachWithBreak(func(i int, s *goquery.Selection) bool {
 		selectorResult = selector(i, s)
+		return selectorResult == ""
 	})
 	if selectorResult == "" {
 		log.Println("selectorResult is empty. Wrong selector?!")
