@@ -11,7 +11,7 @@
       }
     },
     {
-      "src": "favicon.ico",
+      "src": "static/**",
       "use": "@vercel/static"
     }
   ],
