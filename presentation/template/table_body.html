@@ -1,0 +1,42 @@
+{{ define "tableBody" }}
+{{ range .AndroidApps }}
+  {{ if not .Error }}
+  <tr>
+    <td>
+      <span class="icon is-medium is-left">
+        <i class="fab fa-android fa-lg"></i>
+      </span>
+    </td>
+    <td>
+      <figure class="image is-32x32">
+        <img class="is-rounded" src="{{ .ImageSrc }}">
+      </figure>
+    </td>
+    <td>{{ .Id }}</td>
+    <td>{{ .Name }}</td>
+    <td>{{ .Version }}</td>
+    <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
+  </tr>
+  {{ end }}
+{{ end }}
+{{ range .IosApps }}
+  {{ if not .Error }}
+  <tr>
+    <td>
+      <span class="icon is-medium is-left">
+        <i class="fab fa-apple fa-lg"></i>
+      </span>
+    </td>
+    <td>
+      <figure class="image is-32x32">
+        <img class="is-rounded" src="{{ .ImageSrc }}">
+      </figure>
+    </td>
+    <td>{{ .Id }}</td>
+    <td>{{ .Name }}</td>
+    <td>{{ .Version }}</td>
+    <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
+  </tr>
+  {{ end }}
+{{ end }}
+{{ end }}
