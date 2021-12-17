@@ -15,6 +15,9 @@
       <div class="container">
         <p class="title">
           Android
+          {{ if gt (len .AndroidApps) 1 }}
+            ({{ (len .AndroidApps) }})
+          {{ end }}
         </p>
         <div class="columns is-multiline">
           {{ range .AndroidApps }}
@@ -32,6 +35,9 @@
       {{ end }}
         <p class="title">
           iOS
+          {{ if gt (len .IosApps) 1 }}
+            ({{ (len .IosApps) }})
+          {{ end }}
         </p>
         <div class="columns is-multiline">
           {{ range .IosApps}}
