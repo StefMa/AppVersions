@@ -8,10 +8,12 @@ func FormatOutput(format string, androidApps []usecase.App, iosApps []usecase.Ap
 	switch format {
 	case "json":
 		return formatToJson(androidApps, iosApps)
+	case "table":
+		return formatTo(formatTypeTable, androidApps, iosApps)
 	case "pretty":
-		return formatToPretty(androidApps, iosApps)
+		fallthrough
 	default:
-		return formatToPretty(androidApps, iosApps)
+		return formatTo(formatTypePretty, androidApps, iosApps)
 	}
 }
 

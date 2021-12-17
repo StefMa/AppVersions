@@ -6,6 +6,13 @@ import (
 	"stefma.guru/appVersions/usecase"
 )
 
+type formatType int
+
+const (
+	formatTypePretty formatType = iota
+	formatTypeTable
+)
+
 type TemplateModel struct {
 	AndroidApps []App
 	IosApps     []App
@@ -21,8 +28,27 @@ type App struct {
 	Error    bool
 }
 
-func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
-	tmpl := template.Must(template.ParseGlob("presentation/template/pretty*.html"))
+func formatTo(
+	formatType formatType,
+	androidApps []usecase.App,
+	iosApps []usecase.App,
+) string {
+	var tmpl *template.Template
+	switch formatType {
+	case formatTypePretty:
+		tmpl = template.Must(template.ParseGlob("presentation/template/pretty*.html"))
+	case formatTypeTable:
+		tmpl = template.Must(template.ParseGlob("presentation/template/table*.html"))
+	}
+	tmpl = template.Must(tmpl.ParseFiles("presentation/template/header.html"))
+	tmplModel := createModel(androidApps, iosApps)
+	var tpl bytes.Buffer
+	tmpl.Execute(&tpl, tmplModel)
+	string := tpl.String()
+	return string
+}
+
+func createModel(androidApps []usecase.App, iosApps []usecase.App) TemplateModel {
 	androidAppsTmpl := []App{}
 	for _, androidApp := range androidApps {
 		app := App{
@@ -53,7 +79,5 @@ func formatToPretty(androidApps []usecase.App, iosApps []usecase.App) string {
 		AndroidApps: androidAppsTmpl,
 		IosApps:     iosAppsTmpl,
 	}
-	var tpl bytes.Buffer
-	tmpl.Execute(&tpl, tmplModel)
-	return tpl.String()
+	return tmplModel
 }
