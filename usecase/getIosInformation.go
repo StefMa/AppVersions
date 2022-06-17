@@ -1,8 +1,9 @@
 package usecase
 
 import (
-	"github.com/PuerkitoBio/goquery"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 const iosUrlPrefix = "https://apps.apple.com/de/app/"
@@ -62,9 +63,8 @@ func iosRating(body []byte) (string, bool) {
 func iosImageSrc(body []byte) (string, bool) {
 	return extractInformation(body, ".product-hero__artwork", func(i int, s *goquery.Selection) string {
 		imgSrcSet, _ := s.Children().Eq(1).Attr("srcset")
-		imgSrc := strings.Split(imgSrcSet, ",")[1]
-		imgSrc = strings.TrimSuffix(imgSrc, " 2x")
-		imgSrc = strings.TrimSpace(imgSrc)
+		imgSrc := strings.Split(imgSrcSet, ",")[0]
+		imgSrc = strings.Fields(imgSrc)[0]
 		return imgSrc
 	})
 }
