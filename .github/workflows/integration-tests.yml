@@ -1,4 +1,4 @@
-name: Deploy production
+name: Integration Tests
 
 on:
   workflow_dispatch:
