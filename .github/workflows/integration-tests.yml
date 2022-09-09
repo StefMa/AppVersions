@@ -1,0 +1,27 @@
+name: Deploy production
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1-5"
+
+jobs:
+  integration-tests-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.16'
+          cache: true
+      - run: go test -timeout 30s -v -run TestAndroidAppInfo stefma.guru/appVersions/usecase
+
+  integration-tests-ios:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.16'
+          cache: true
+      - run: go test -timeout 30s -v -run TestIosAppInfo stefma.guru/appVersions/usecase   
