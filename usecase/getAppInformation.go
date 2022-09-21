@@ -32,8 +32,8 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	// Step 1: We create separate goroutines for fetching each app's info.
 	// PS: There is no limit here and we may create thousands of goroutines in a worst case. Go can handle
 	// this easily :) not sure about the remote api though. Anyways this should be in our control. Also
-	// the goroutines can run for too long and hand the whole process hence we should always have a way to
-	// tell goroutines to stop. All this enhancements can be made later of course.
+	// the goroutines can run for too long and hang the whole process hence we should always have a way to
+	// tell goroutines to stop. All these enhancements can be made later of course.
 
 	// Get information about all android apps concurrently.
 	for _, id := range androidAppIds {
@@ -58,7 +58,7 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	}
 
 	// Step 2: We wait/block until all goroutines are finished. As a part of that we take advantage of
-	// select statement to do 'io muxing' in multiple channels and keep filling the info object
+	// select statement to do 'io muxing' on multiple channels and keep filling the info object
 	// with app info as when they become available from above goroutines.
 	// Stop when we have got info for all required app ids.
 	log.Printf("\nready to receive app information from background tasks...")
