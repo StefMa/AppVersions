@@ -8,9 +8,9 @@ import (
 func TestAndroidAppInfoSuccess(t *testing.T) {
 	want := App{
 		Id:       "com.ioki.hamburg",
-		Name:     "ioki Hamburg",
+		Name:     "hvv hop",
 		Url:      "https://play.google.com/store/apps/details?id=com.ioki.hamburg",
-		ImageSrc: "https://play-lh.googleusercontent.com/08VmA2BAm0Jiy3tatZU3cQ2y07HH98q8qvdwUjGaPLJTW2uwVLHfpikqxzI4Av71btc",
+		ImageSrc: "https://play-lh.googleusercontent.com/pe6sBG19TijAfO6yPJ2q2zZM8pBMPd4GC7LbPWe0juZPAMx495vXxMY4Ame-B0q51uFV",
 		Error:    false,
 	}
 	got := androidAppInfo("com.ioki.hamburg")
