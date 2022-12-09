@@ -8,9 +8,9 @@ import (
 func TestIosAppInfoSuccess(t *testing.T) {
 	want := App{
 		Id:       "ioki-hamburg/id1400408720",
-		Name:     "ioki Hamburg",
+		Name:     "hvv hop",
 		Url:      "https://apps.apple.com/de/app/ioki-hamburg/id1400408720",
-		ImageSrc: "https://is4-ssl.mzstatic.com/image/thumb/Purple112/v4/7f/31/8d/7f318d07-0d2c-1cd0-8edf-0b9b40a9f139/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
+		ImageSrc: "https://is5-ssl.mzstatic.com/image/thumb/Purple122/v4/02/1d/78/021d7864-f36e-10ea-03df-78277f4adac9/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png" ,
 		Error:    false,
 	}
 	got := iosAppInfo("ioki-hamburg/id1400408720")
