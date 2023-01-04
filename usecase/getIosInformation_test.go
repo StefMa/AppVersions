@@ -10,7 +10,7 @@ func TestIosAppInfoSuccess(t *testing.T) {
 		Id:       "ioki-hamburg/id1400408720",
 		Name:     "hvv hop",
 		Url:      "https://apps.apple.com/de/app/ioki-hamburg/id1400408720",
-		ImageSrc: "https://is5-ssl.mzstatic.com/image/thumb/Purple122/v4/02/1d/78/021d7864-f36e-10ea-03df-78277f4adac9/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png" ,
+		ImageSrc: "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/56/9f/c4/569fc4f5-737c-a3aa-d1bc-94a6e969ba43/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
 		Error:    false,
 	}
 	got := iosAppInfo("ioki-hamburg/id1400408720")
