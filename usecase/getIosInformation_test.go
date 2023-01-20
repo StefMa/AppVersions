@@ -7,13 +7,13 @@ import (
 
 func TestIosAppInfoSuccess(t *testing.T) {
 	want := App{
-		Id:       "ioki-hamburg/id1400408720",
-		Name:     "hvv hop",
-		Url:      "https://apps.apple.com/de/app/ioki-hamburg/id1400408720",
-		ImageSrc: "https://is4-ssl.mzstatic.com/image/thumb/Purple113/v4/56/9f/c4/569fc4f5-737c-a3aa-d1bc-94a6e969ba43/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
+		Id:       "ioki-wittlich/id1377071496",
+		Name:     "ioki Wittlich",
+		Url:      "https://apps.apple.com/de/app/ioki-wittlich/id1377071496",
+		ImageSrc: "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/1a/03/2c/1a032cba-693e-0d44-0247-6ef3f5c135d7/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
 		Error:    false,
 	}
-	got := iosAppInfo("ioki-hamburg/id1400408720")
+	got := iosAppInfo("ioki-wittlich/id1377071496")
 
 	fmt.Printf("\nGot the following iOS App info:\n%+v\n\n", got)
 	if want.Id != got.Id {
