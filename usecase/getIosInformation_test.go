@@ -10,7 +10,7 @@ func TestIosAppInfoSuccess(t *testing.T) {
 		Id:       "ioki-wittlich/id1377071496",
 		Name:     "ioki Wittlich",
 		Url:      "https://apps.apple.com/de/app/ioki-wittlich/id1377071496",
-		ImageSrc: "https://is2-ssl.mzstatic.com/image/thumb/Purple113/v4/1a/03/2c/1a032cba-693e-0d44-0247-6ef3f5c135d7/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
+		ImageSrc: "https://is2-ssl.mzstatic.com/image/thumb/Purple116/v4/a7/dd/9f/a7dd9fdf-e6af-bce4-5104-10d67a7217e6/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
 		Error:    false,
 	}
 	got := iosAppInfo("ioki-wittlich/id1377071496")
