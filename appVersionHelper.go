@@ -3,9 +3,10 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strings"
+
 	"stefma.guru/appVersions/presentation"
 	"stefma.guru/appVersions/usecase"
-	"strings"
 )
 
 func HandleFunc(w http.ResponseWriter, r *http.Request) {
@@ -30,7 +31,21 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
 		appsInformation := usecase.GetAppsInformation(androidAppIds, iosAppIds)
 		fmt.Fprint(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
+		w.Header().Add("Content-Type", getContentType(format))
 	} else {
 		fmt.Fprint(w, presentation.Index())
+	}
+}
+
+func getContentType(format string) string {
+	switch format {
+	case "json":
+		return "application/json"
+	case "table":
+		fallthrough
+	case "pretty":
+		fallthrough
+	default:
+		return "text/html"
 	}
 }
