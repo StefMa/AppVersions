@@ -7,4 +7,21 @@
   <script defer src="https://use.fontawesome.com/releases/v5.13.1/js/all.js"></script>
   <link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico">
 </head>
+<script>
+  function changeFormat(type) {
+    var searchParams = new URLSearchParams(window.location.search);
+    switch (type) {
+      case "card": 
+        searchParams.set("format", "pretty");
+        break;
+      case "table":
+        searchParams.set("format", "table");
+        break;
+      case "json":
+        searchParams.set("format", "json");
+        break;
+    }
+    window.location.search = searchParams.toString();
+  }
+</script>
 {{ end }}
