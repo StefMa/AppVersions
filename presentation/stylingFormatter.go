@@ -3,6 +3,7 @@ package presentation
 import (
 	"bytes"
 	"html/template"
+
 	"stefma.guru/appVersions/usecase"
 )
 
@@ -14,8 +15,10 @@ const (
 )
 
 type TemplateModel struct {
-	AndroidApps []App
-	IosApps     []App
+	AndroidApps      []App
+	IosApps          []App
+	AndroidErrorApps []ErrorApp
+	IosErrorApps     []ErrorApp
 }
 
 type App struct {
@@ -25,7 +28,10 @@ type App struct {
 	Rating   string
 	Url      string
 	ImageSrc string
-	Error    bool
+}
+
+type ErrorApp struct {
+	Id string
 }
 
 func formatTo(
@@ -50,34 +56,44 @@ func formatTo(
 
 func createModel(androidApps []usecase.App, iosApps []usecase.App) TemplateModel {
 	androidAppsTmpl := []App{}
+	androidErrorAppsTmpl := []ErrorApp{}
 	for _, androidApp := range androidApps {
-		app := App{
-			Id:       androidApp.Id,
-			Name:     androidApp.Name,
-			Version:  androidApp.Version,
-			Rating:   androidApp.Rating,
-			Url:      androidApp.Url,
-			ImageSrc: androidApp.ImageSrc,
-			Error:    androidApp.Error,
+		if androidApp.Error {
+			androidErrorAppsTmpl = append(androidErrorAppsTmpl, ErrorApp{androidApp.Id})
+		} else {
+			app := App{
+				Id:       androidApp.Id,
+				Name:     androidApp.Name,
+				Version:  androidApp.Version,
+				Rating:   androidApp.Rating,
+				Url:      androidApp.Url,
+				ImageSrc: androidApp.ImageSrc,
+			}
+			androidAppsTmpl = append(androidAppsTmpl, app)
 		}
-		androidAppsTmpl = append(androidAppsTmpl, app)
 	}
 	iosAppsTmpl := []App{}
+	iosErrorAppsTmpl := []ErrorApp{}
 	for _, iosApp := range iosApps {
-		app := App{
-			Id:       iosApp.Id,
-			Name:     iosApp.Name,
-			Version:  iosApp.Version,
-			Rating:   iosApp.Rating,
-			Url:      iosApp.Url,
-			ImageSrc: iosApp.ImageSrc,
-			Error:    iosApp.Error,
+		if iosApp.Error {
+			iosErrorAppsTmpl = append(iosErrorAppsTmpl, ErrorApp{iosApp.Id})
+		} else {
+			app := App{
+				Id:       iosApp.Id,
+				Name:     iosApp.Name,
+				Version:  iosApp.Version,
+				Rating:   iosApp.Rating,
+				Url:      iosApp.Url,
+				ImageSrc: iosApp.ImageSrc,
+			}
+			iosAppsTmpl = append(iosAppsTmpl, app)
 		}
-		iosAppsTmpl = append(iosAppsTmpl, app)
 	}
 	tmplModel := TemplateModel{
-		AndroidApps: androidAppsTmpl,
-		IosApps:     iosAppsTmpl,
+		AndroidApps:      androidAppsTmpl,
+		IosApps:          iosAppsTmpl,
+		AndroidErrorApps: androidErrorAppsTmpl,
+		IosErrorApps:     iosErrorAppsTmpl,
 	}
 	return tmplModel
 }

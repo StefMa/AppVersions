@@ -1,6 +1,5 @@
 {{ define "tableBody" }}
 {{ range .AndroidApps }}
-  {{ if not .Error }}
   <tr>
     <td>
       <span class="icon is-medium is-left">
@@ -17,10 +16,8 @@
     <td>{{ .Version }}</td>
     <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
   </tr>
-  {{ end }}
 {{ end }}
 {{ range .IosApps }}
-  {{ if not .Error }}
   <tr>
     <td>
       <span class="icon is-medium is-left">
@@ -37,6 +34,5 @@
     <td>{{ .Version }}</td>
     <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
   </tr>
-  {{ end }}
 {{ end }}
 {{ end }}
