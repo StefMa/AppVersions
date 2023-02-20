@@ -14,6 +14,27 @@
       </div>
     </div>
     </br>
+    {{ if or (gt (len .AndroidErrorApps) 0) (gt (len .IosErrorApps) 0) }}
+      <article class="message is-small is-danger">
+        <div class="message-body">
+          <string>Couldn't fetch</string> the following
+          {{ if gt (len .AndroidErrorApps) 0 }}
+            </br>
+            <strong>Android</strong> apps:
+            {{ range .AndroidErrorApps }}
+              {{ .Id }}
+            {{ end }}
+          {{ end }}
+          {{ if gt (len .IosErrorApps) 0 }}
+            </br>
+            <strong>iOS</strong> apps:
+            {{ range .IosErrorApps }}
+              {{ .Id }}
+            {{ end }}
+          {{ end}}
+        </div>
+      </article>
+    {{ end }}
     <div class="container">
       <table class="table is-striped is-fullwidth">
         <thead>
