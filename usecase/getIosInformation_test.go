@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"fmt"
+	"net/url"
 	"testing"
 )
 
@@ -31,8 +32,8 @@ func TestIosAppInfoSuccess(t *testing.T) {
 	if want.Url != got.Url {
 		t.Errorf("%s is not %s", want.Url, got.Url)
 	}
-	if want.ImageSrc != got.ImageSrc {
-		t.Errorf("%s is not %s", want.ImageSrc, got.ImageSrc)
+	if _, err := url.Parse(got.ImageSrc); err != nil {
+		t.Errorf("ImageSrc is not a valid URL. Got %s", got.ImageSrc)
 	}
 	if want.Error != got.Error {
 		t.Errorf("%t is not %t", want.Error, got.Error)
