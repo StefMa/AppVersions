@@ -11,7 +11,14 @@
         <img class="is-rounded" src="{{ .ImageSrc }}">
       </figure>
     </td>
-    <td>{{ .Id }}</td>
+    <td>
+      <a href="{{ .Url }}" class="has-text-dark">
+        {{ .Id }} 
+        <span class="icon is-small">
+          <i class="fas fa-external-link-alt"></i>
+        </span>
+      </a>
+    </td>
     <td>{{ .Name }}</td>
     <td>{{ .Version }}</td>
     <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
@@ -29,7 +36,14 @@
         <img class="is-rounded" src="{{ .ImageSrc }}">
       </figure>
     </td>
-    <td>{{ .Id }}</td>
+    <td>
+      <a href="{{ .Url }}" class="has-text-dark">
+        {{ .Id }} 
+        <span class="icon is-small">
+          <i class="fas fa-external-link-alt"></i>
+        </span>
+      </a>
+    </td>
     <td>{{ .Name }}</td>
     <td>{{ .Version }}</td>
     <td>{{ if .Rating }} {{ .Rating }} {{ end }}</td>
