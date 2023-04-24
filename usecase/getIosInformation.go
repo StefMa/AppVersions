@@ -1,6 +1,10 @@
 package usecase
 
 import (
+	"bytes"
+	"io"
+	"log"
+	"net/http"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -36,6 +40,25 @@ func iosAppInfo(appId string) App {
 	}
 }
 
+func fetchWebsite(url string) ([]byte, bool) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	if resp.StatusCode != 200 {
+		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
+		return nil, false
+	}
+	defer resp.Body.Close()
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(err)
+		return nil, false
+	}
+	return bodyBytes, true
+}
+
 func iosVersion(body []byte) (string, bool) {
 	return extractInformation(body, ".whats-new__latest__version", func(i int, s *goquery.Selection) string {
 		return strings.Replace(s.Text(), "Version ", "", -1)
@@ -67,4 +90,21 @@ func iosImageSrc(body []byte) (string, bool) {
 		imgSrc = strings.Fields(imgSrc)[0]
 		return imgSrc
 	})
+}
+
+func extractInformation(body []byte, htmlClass string, selector func(int, *goquery.Selection) string) (string, bool) {
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
+	if err != nil {
+		log.Println(err)
+		return "", false
+	}
+	selectorResult := ""
+	doc.Find(htmlClass).EachWithBreak(func(i int, s *goquery.Selection) bool {
+		selectorResult = selector(i, s)
+		return selectorResult == ""
+	})
+	if selectorResult == "" {
+		log.Println("selectorResult is empty. Wrong selector?!")
+	}
+	return selectorResult, true
 }
