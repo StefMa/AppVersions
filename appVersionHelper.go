@@ -14,10 +14,10 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 	iosQuery := r.URL.Query().Get("ios")
 	format := r.URL.Query().Get("format")
 
-	var androidAppIds []string
+	var androidAppOrDevIds []string
 	if androidQuery != "" {
 		for _, androidAppId := range strings.Split(androidQuery, ",") {
-			androidAppIds = append(androidAppIds, strings.TrimSpace(androidAppId))
+			androidAppOrDevIds = append(androidAppOrDevIds, strings.TrimSpace(androidAppId))
 		}
 	}
 
@@ -28,8 +28,8 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if len(androidAppIds) > 0 || len(iosAppIds) > 0 {
-		appsInformation := usecase.GetAppsInformation(androidAppIds, iosAppIds)
+	if len(androidAppOrDevIds) > 0 || len(iosAppIds) > 0 {
+		appsInformation := usecase.GetAppsInformation(androidAppOrDevIds, iosAppIds)
 		fmt.Fprint(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
 		w.Header().Add("Content-Type", getContentType(format))
 	} else {

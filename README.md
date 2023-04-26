@@ -14,6 +14,7 @@
 | iOS (single app) - ioki Hamburg | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720) | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720&format=table) | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720&format=json) | 
 | iOS (multiple apps) - ioki Hamburg, ioki Wittlich | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496) | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496&format=table) | [Link](https://appversions.vercel.app/?ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496&format=json) | 
 | Android & iOS (multiple apps) - ioki Hamburg, ioki Wittlich | [Link](https://appversions.vercel.app/?android=com.ioki.hamburg,com.ioki.wittlich&ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496) | [Link](https://appversions.vercel.app/?android=com.ioki.hamburg,com.ioki.wittlich&ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496&format=table) | [Link](https://appversions.vercel.app/?android=com.ioki.hamburg,com.ioki.wittlich&ios=ioki-hamburg/id1400408720,ioki-wittlich/id1377071496&format=json) | 
+| Android (with Developer ID) - [ioki](https://play.google.com/store/apps/dev?id=8505861851834820244) | [Link](https://appversions.vercel.app/?android=did:8505861851834820244) | [Link](https://appversions.vercel.app/?android=did:8505861851834820244&format=table) | [Link](https://appversions.vercel.app/?android=did:8505861851834820244&format=json) | 
 
 
 ## Formats

@@ -1,12 +1,8 @@
 package usecase
 
 import (
-	"bytes"
-	"github.com/PuerkitoBio/goquery"
-	"io"
-	"log"
-	"net/http"
 	"sort"
+	"strings"
 )
 
 type AppsInformation struct {
@@ -24,7 +20,12 @@ type App struct {
 	Error    bool
 }
 
-func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformation {
+const developerIdPrefix = "did:"
+
+func GetAppsInformation(androidAppOrDevIds []string, iosAppIds []string) AppsInformation {
+	androidAppIds := filterAppIds(androidAppOrDevIds, func(devId string) []string {
+		return androidAppIdsFromDeveloperId(devId)
+	})
 	androidAppsChannel := make(chan []App)
 	iosAppsChannel := make(chan []App)
 	go appInformation(androidAppIds, androidAppsChannel, func(appId string) App {
@@ -40,23 +41,17 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	}
 }
 
-func fetchWebsite(url string) ([]byte, bool) {
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Println(err)
-		return nil, false
+func filterAppIds(appOrDevIds []string, f func(devId string) []string) []string {
+	appIds := appOrDevIds
+	for idx, appOrDevId := range appOrDevIds {
+		if strings.HasPrefix(appOrDevId, developerIdPrefix) {
+			devId := strings.TrimPrefix(appOrDevId, developerIdPrefix)
+			appIdsFromDev := f(devId)
+			appIds = append(appIds[:idx], appIds[idx+1:]...)
+			appIds = append(appIds, appIdsFromDev...)
+		}
 	}
-	if resp.StatusCode != 200 {
-		log.Printf("status code error: %d %s", resp.StatusCode, resp.Status)
-		return nil, false
-	}
-	defer resp.Body.Close()
-	bodyBytes, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Println(err)
-		return nil, false
-	}
-	return bodyBytes, true
+	return appIds
 }
 
 func appInformation(appIds []string, appsChannel chan []App, f func(appId string) App) {
@@ -72,21 +67,4 @@ func appInformation(appIds []string, appsChannel chan []App, f func(appId string
 	}
 	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
-}
-
-func extractInformation(body []byte, htmlClass string, selector func(int, *goquery.Selection) string) (string, bool) {
-	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(body))
-	if err != nil {
-		log.Println(err)
-		return "", false
-	}
-	selectorResult := ""
-	doc.Find(htmlClass).EachWithBreak(func(i int, s *goquery.Selection) bool {
-		selectorResult = selector(i, s)
-		return selectorResult == ""
-	})
-	if selectorResult == "" {
-		log.Println("selectorResult is empty. Wrong selector?!")
-	}
-	return selectorResult, true
 }
