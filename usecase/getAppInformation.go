@@ -20,8 +20,12 @@ type App struct {
 	Error    bool
 }
 
-func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformation {
-	androidAppIds = androidAppsFromDeveloperId(androidAppIds)
+const developerIdPrefix = "did:"
+
+func GetAppsInformation(androidAppOrDevIds []string, iosAppIds []string) AppsInformation {
+	androidAppIds := filterAppIds(androidAppOrDevIds, func(devId string) []string {
+		return androidAppIdsFromDeveloperId(devId)
+	})
 	androidAppsChannel := make(chan []App)
 	iosAppsChannel := make(chan []App)
 	go appInformation(androidAppIds, androidAppsChannel, func(appId string) App {
@@ -37,16 +41,17 @@ func GetAppsInformation(androidAppIds []string, iosAppIds []string) AppsInformat
 	}
 }
 
-func androidAppsFromDeveloperId(androidAppIds []string) []string {
-	for idx, appId := range androidAppIds {
-		if strings.HasPrefix(appId, "did:") {
-			developerId := strings.TrimPrefix(appId, "did:")
-			appIdsFromDeveloper := androidAppIdsFromDeveloperId(developerId)
-			androidAppIds = append(androidAppIds[:idx], androidAppIds[idx+1:]...)
-			androidAppIds = append(androidAppIds, appIdsFromDeveloper...)
+func filterAppIds(appOrDevIds []string, f func(devId string) []string) []string {
+	appIds := appOrDevIds
+	for idx, appOrDevId := range appOrDevIds {
+		if strings.HasPrefix(appOrDevId, developerIdPrefix) {
+			devId := strings.TrimPrefix(appOrDevId, developerIdPrefix)
+			appIdsFromDev := f(devId)
+			appIds = append(appIds[:idx], appIds[idx+1:]...)
+			appIds = append(appIds, appIdsFromDev...)
 		}
 	}
-	return androidAppIds
+	return appIds
 }
 
 func appInformation(appIds []string, appsChannel chan []App, f func(appId string) App) {

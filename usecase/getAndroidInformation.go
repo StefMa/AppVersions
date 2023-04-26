@@ -36,17 +36,17 @@ func androidAppInfo(appId string) App {
 	return createApp(appId, app)
 }
 
-func createApp(appOrPublisherId string, app *playScraper.App) App {
+func createApp(appId string, app *playScraper.App) App {
 	nameOk := app.Title != ""
 	versionOk := app.Version != ""
 	ratingOk := app.ScoreText != ""
 	imgOk := app.Icon != ""
 	return App{
-		Id:       appOrPublisherId,
+		Id:       appId,
 		Name:     app.Title,
 		Version:  app.Version,
 		Rating:   app.ScoreText,
-		Url:      androidUrlPrefix + appOrPublisherId,
+		Url:      androidUrlPrefix + appId,
 		ImageSrc: app.Icon,
 		Error:    !(nameOk && versionOk && ratingOk && imgOk),
 	}
