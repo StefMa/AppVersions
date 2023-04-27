@@ -22,9 +22,12 @@ type App struct {
 
 const developerIdPrefix = "did:"
 
-func GetAppsInformation(androidAppOrDevIds []string, iosAppIds []string) AppsInformation {
+func GetAppsInformation(androidAppOrDevIds []string, iosAppOrDevIds []string) AppsInformation {
 	androidAppIds := filterAppIds(androidAppOrDevIds, func(devId string) []string {
 		return androidAppIdsFromDeveloperId(devId)
+	})
+	iosAppIds := filterAppIds(iosAppOrDevIds, func(devId string) []string {
+		return iosAppIdsFromDeveloperId(devId)
 	})
 	androidAppsChannel := make(chan []App)
 	iosAppsChannel := make(chan []App)

@@ -21,15 +21,15 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var iosAppIds []string
+	var iosAppOrDevIds []string
 	if iosQuery != "" {
 		for _, iosAppId := range strings.Split(iosQuery, ",") {
-			iosAppIds = append(iosAppIds, strings.TrimSpace(iosAppId))
+			iosAppOrDevIds = append(iosAppOrDevIds, strings.TrimSpace(iosAppId))
 		}
 	}
 
-	if len(androidAppOrDevIds) > 0 || len(iosAppIds) > 0 {
-		appsInformation := usecase.GetAppsInformation(androidAppOrDevIds, iosAppIds)
+	if len(androidAppOrDevIds) > 0 || len(iosAppOrDevIds) > 0 {
+		appsInformation := usecase.GetAppsInformation(androidAppOrDevIds, iosAppOrDevIds)
 		fmt.Fprint(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
 		w.Header().Add("Content-Type", getContentType(format))
 	} else {
