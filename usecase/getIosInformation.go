@@ -5,12 +5,31 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"stefma.guru/appVersions/appstorescraper"
 )
 
 const iosUrlPrefix = "https://apps.apple.com/de/app/"
+
+func iosAppIdsFromDeveloperId(devId string) []string {
+	options := appstorescraper.Options{
+		Language: "de",
+		Country:  "de",
+		Limit:    100,
+	}
+	results, err := appstorescraper.Developer(devId, options)
+	if err != nil {
+		return []string{}
+	}
+	appIds := []string{}
+	for _, result := range results {
+		appIds = append(appIds, strconv.Itoa(result.TrackID))
+	}
+	return appIds
+}
 
 func iosAppInfo(appId string) App {
 	body, ok := fetchWebsite(iosUrlPrefix + appId)
