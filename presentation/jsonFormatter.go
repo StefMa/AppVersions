@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"stefma.guru/appVersions/usecase"
+
+	"github.com/StefMa/AppVersions/usecase"
 )
 
 type jsonOutput struct {

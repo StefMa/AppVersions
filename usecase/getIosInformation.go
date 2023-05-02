@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"stefma.guru/appVersions/appstorescraper"
+	"github.com/StefMa/AppVersions/appstorescraper"
 )
 
 const iosUrlPrefix = "https://apps.apple.com/de/app/"
