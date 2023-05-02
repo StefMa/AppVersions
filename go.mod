@@ -1,4 +1,4 @@
-module stefma.guru/appVersions
+module github.com/StefMa/AppVersions
 
 go 1.16
 

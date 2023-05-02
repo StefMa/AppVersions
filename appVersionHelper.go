@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	"stefma.guru/appVersions/presentation"
-	"stefma.guru/appVersions/usecase"
+	"github.com/StefMa/AppVersions/presentation"
+	"github.com/StefMa/AppVersions/usecase"
 )
 
 func HandleFunc(w http.ResponseWriter, r *http.Request) {

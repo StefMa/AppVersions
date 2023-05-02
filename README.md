@@ -1,4 +1,4 @@
-<h1 align="center"> ✨ App Versions ✨ </h1>
+<h1 align="center"> ✨ AppVers.io ✨ </h1>
 <p align="center">A web application that shows you the latest version of apps in the respective app store</p>
 
 <p align="center">

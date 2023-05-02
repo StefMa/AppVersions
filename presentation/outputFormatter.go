@@ -1,7 +1,7 @@
 package presentation
 
 import (
-	"stefma.guru/appVersions/usecase"
+	"github.com/StefMa/AppVersions/usecase"
 )
 
 func FormatOutput(format string, androidApps []usecase.App, iosApps []usecase.App) string {

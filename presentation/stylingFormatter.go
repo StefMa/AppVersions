@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"html/template"
 
-	"stefma.guru/appVersions/usecase"
+	"github.com/StefMa/AppVersions/usecase"
 )
 
 type formatType int
