@@ -1,0 +1,55 @@
+name: Deploy staging
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * MON"
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        id: setup-go
+        with:
+          go-version: '1.20'
+          check-latest: true
+      - id: check-go-version
+        run: |
+          latestGoVersion=$(go version | grep -o "go[0-9]\+\.[0-9]\+" | cut -c 3-)
+          go mod edit -go=$latestGoVersion
+          go mod tidy
+
+          if [[ -n $(git status -s) ]]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git checkout -b go-update-$latestGoVersion
+            git commit -m "Update Go to version to $latestGoVersion" .
+            git push origin go-update-$latestGoVersion
+            echo "shouldCreatePr=true" >> $GITHUB_OUTPUT
+            echo "branchName=go-update-$latestGoVersion" >> $GITHUB_OUTPUT
+          else 
+            echo "Nothing to do... Latest go version is $latestGoVersion"
+            echo "shouldCreatePr=false" >> $GITHUB_OUTPUT
+          fi
+      - uses: actions/github-script@v6
+        if: ${{ steps.check-go-version.outputs.shouldCreatePr == 'true' }}
+        with:
+          script: |
+            const branchName = ${{ steps.check-go-version.outputs.branchName }}
+            const owner = github.context.repo.owner;
+            const repo = github.context.repo.repo;
+            const title = 'Update go version to $latest';
+            const body = '';
+            const head = "go-update-$branchName";
+            const base = 'main';
+            
+            const response = await github.rest.pulls.create({
+              owner: owner,
+              repo: repo,
+              title: title,
+              body: body,
+              head: head,
+              base: base
+            });
