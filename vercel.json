@@ -1,21 +1,14 @@
 {
   "version": 2,
-  "builds": [
+  "cleanUrls": true,
+  "rewrites": [
     {
-      "src": "appVersionHelper.go",
-      "use": "@vercel/go",
-      "config": {
-        "includeFiles": [
-          "presentation/template/*.html"
-        ]
-      }
+      "source": "/",
+      "destination": "/api/index"
     },
     {
-      "src": "static/**",
-      "use": "@vercel/static"
+      "source": "/lookup",
+      "destination": "/api/lookup"
     }
-  ],
-  "routes": [
-       { "src": "/", "dest": "appVersionHelper.go" }
-   ]
+  ]
 }

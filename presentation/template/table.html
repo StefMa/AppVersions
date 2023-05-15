@@ -35,32 +35,34 @@
         </div>
       </article>
     {{ end }}
-    <div class="table-container">
-      <table class="table is-striped is-hoverable is-fullwidth">
-        <thead>
-          <tr>
-            <th>Platform</th>
-            <th>Logo</th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Version</th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tfoot>
-          <tr>
-            <th>Platform</th>
-            <th>Logo</th>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Version</th>
-            <th>Rating</th>
-          </tr>
-        </tfoot>
-        <tbody>
-          {{ template "tableBody" . }}
-        </tbody>
-      </table>
+    <div class="container">
+      <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Logo</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Version</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Platform</th>
+              <th>Logo</th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Version</th>
+              <th>Rating</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {{ template "tableBody" . }}
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
   </body>

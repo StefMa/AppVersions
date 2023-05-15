@@ -42,11 +42,10 @@ func formatTo(
 	var tmpl *template.Template
 	switch formatType {
 	case formatTypePretty:
-		tmpl = template.Must(template.ParseGlob("presentation/template/pretty*.html"))
+		tmpl = template.Must(template.ParseFS(templates, "template/pretty*.html", "template/header.html"))
 	case formatTypeTable:
-		tmpl = template.Must(template.ParseGlob("presentation/template/table*.html"))
+		tmpl = template.Must(template.ParseFS(templates, "template/table*.html", "template/header.html"))
 	}
-	tmpl = template.Must(tmpl.ParseFiles("presentation/template/header.html"))
 	tmplModel := createModel(androidApps, iosApps)
 	var tpl bytes.Buffer
 	tmpl.Execute(&tpl, tmplModel)

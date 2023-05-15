@@ -1,4 +1,4 @@
-package handler
+package api
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"github.com/StefMa/AppVersions/usecase"
 )
 
-func HandleFunc(w http.ResponseWriter, r *http.Request) {
+func Lookup(w http.ResponseWriter, r *http.Request) {
 	androidQuery := r.URL.Query().Get("android")
 	iosQuery := r.URL.Query().Get("ios")
 	format := r.URL.Query().Get("format")
@@ -33,7 +33,7 @@ func HandleFunc(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, presentation.FormatOutput(format, appsInformation.AndroidApps, appsInformation.IosApps))
 		w.Header().Add("Content-Type", getContentType(format))
 	} else {
-		fmt.Fprint(w, presentation.Index())
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	}
 }
 
