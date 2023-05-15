@@ -1,8 +1,13 @@
 package presentation
 
 import (
+	"embed"
+
 	"github.com/StefMa/AppVersions/usecase"
 )
+
+//go:embed template/*
+var templates embed.FS
 
 func FormatOutput(format string, androidApps []usecase.App, iosApps []usecase.App) string {
 	switch format {
