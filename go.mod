@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
+	github.com/StefMa/app-store-scraper v0.0.0-20230605055620-34462785e4a7
 	github.com/n0madic/google-play-scraper v0.0.0-20230423092235-0d248506e95b
 )
 

@@ -1,5 +1,9 @@
 github.com/PuerkitoBio/goquery v1.8.1 h1:uQxhNlArOIdbrH1tr0UXwdVFgDcZDrZVdcpygAcwmWM=
 github.com/PuerkitoBio/goquery v1.8.1/go.mod h1:Q8ICL1kNUJ2sXGoAhPGUdYDJvgQgHzJsnnd3H7Ho5jQ=
+github.com/StefMa/app-store-scraper v0.0.0-20230603094844-4a1f9b763f5c h1:iGrdCmB62+BjUW9CE5Y7r1rSWeMJTdaRd9vUUrdGKsA=
+github.com/StefMa/app-store-scraper v0.0.0-20230603094844-4a1f9b763f5c/go.mod h1:YwoBwzgEKG6zvfwmN9gjNubIOxZStqhGg/N50aMIkbM=
+github.com/StefMa/app-store-scraper v0.0.0-20230605055620-34462785e4a7 h1:jvmA2vSpdEKDp3ojcwwNlXToXeAQP88QUTShN3cW9To=
+github.com/StefMa/app-store-scraper v0.0.0-20230605055620-34462785e4a7/go.mod h1:YwoBwzgEKG6zvfwmN9gjNubIOxZStqhGg/N50aMIkbM=
 github.com/andybalholm/cascadia v1.3.1 h1:nhxRkql1kdYCc8Snf7D5/D3spOX+dBgjA6u8x004T2c=
 github.com/andybalholm/cascadia v1.3.1/go.mod h1:R4bJ1UQfqADjvDa4P6HZHLh/3OxWWEqc0Sk8XGwHqvA=
 github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 h1:EGx4pi6eqNxGaHF6qqu48+N2wcFQ5qg5FXgOdqsJ5d8=

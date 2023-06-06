@@ -71,3 +71,15 @@ func appInformation(appIds []string, appsChannel chan []App, f func(appId string
 	sort.Slice(apps, func(i, j int) bool { return apps[i].Name < apps[j].Name })
 	appsChannel <- apps
 }
+
+func createErrorApp(appId string, url string) App {
+	return App{
+		Id:       appId,
+		Name:     "",
+		Version:  "",
+		Rating:   "",
+		Url:      url,
+		ImageSrc: "",
+		Error:    true,
+	}
+}
