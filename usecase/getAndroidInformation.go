@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"strings"
+
 	playScraper "github.com/n0madic/google-play-scraper/pkg/app"
 	playScraperDevSearch "github.com/n0madic/google-play-scraper/pkg/developer"
 )
@@ -45,7 +47,7 @@ func createAndroidApp(appId string, app *playScraper.App) App {
 		Id:       appId,
 		Name:     app.Title,
 		Version:  app.Version,
-		Rating:   app.ScoreText,
+		Rating:   strings.ReplaceAll(app.ScoreText, ",", "."),
 		Url:      androidUrlPrefix + appId,
 		ImageSrc: app.Icon,
 		Error:    !(nameOk && versionOk && ratingOk && imgOk),
