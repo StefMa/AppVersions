@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"strings"
+
 	playScraper "github.com/n0madic/google-play-scraper/pkg/app"
 	playScraperDevSearch "github.com/n0madic/google-play-scraper/pkg/developer"
 )
@@ -31,12 +33,12 @@ func androidAppInfo(appId string) App {
 	})
 	err := app.LoadDetails()
 	if err != nil {
-		return createErrorApp(appId)
+		return createErrorApp(appId, androidUrlPrefix+appId)
 	}
-	return createApp(appId, app)
+	return createAndroidApp(appId, app)
 }
 
-func createApp(appId string, app *playScraper.App) App {
+func createAndroidApp(appId string, app *playScraper.App) App {
 	nameOk := app.Title != ""
 	versionOk := app.Version != ""
 	ratingOk := app.ScoreText != ""
@@ -45,21 +47,9 @@ func createApp(appId string, app *playScraper.App) App {
 		Id:       appId,
 		Name:     app.Title,
 		Version:  app.Version,
-		Rating:   app.ScoreText,
+		Rating:   strings.ReplaceAll(app.ScoreText, ",", "."),
 		Url:      androidUrlPrefix + appId,
 		ImageSrc: app.Icon,
 		Error:    !(nameOk && versionOk && ratingOk && imgOk),
-	}
-}
-
-func createErrorApp(appId string) App {
-	return App{
-		Id:       appId,
-		Name:     "",
-		Version:  "",
-		Rating:   "",
-		Url:      androidUrlPrefix + appId,
-		ImageSrc: "",
-		Error:    true,
 	}
 }

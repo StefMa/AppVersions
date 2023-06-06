@@ -8,13 +8,13 @@ import (
 
 func TestIosAppInfoSuccess(t *testing.T) {
 	want := App{
-		Id:       "ioki-wittlich/id1377071496",
+		Id:       "1377071496",
 		Name:     "ioki Wittlich",
-		Url:      "https://apps.apple.com/de/app/ioki-wittlich/id1377071496",
+		Url:      "https://apps.apple.com/de/app/ioki-wittlich/id1377071496?uo=4",
 		ImageSrc: "https://is2-ssl.mzstatic.com/image/thumb/Purple116/v4/34/bd/4a/34bd4aed-0472-0258-c8e8-b4e79a25fac8/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
 		Error:    false,
 	}
-	got := iosAppInfo("ioki-wittlich/id1377071496")
+	got := iosAppInfo("1377071496")
 
 	fmt.Printf("\nGot the following iOS App info:\n%+v\n\n", got)
 	if want.Id != got.Id {
@@ -42,15 +42,15 @@ func TestIosAppInfoSuccess(t *testing.T) {
 
 func TestIosAppInfoFailure(t *testing.T) {
 	want := App{
-		Id:       "ioki-doesNotExist/id6666666666",
+		Id:       "6666666666",
 		Name:     "",
 		Version:  "",
 		Rating:   "",
-		Url:      "https://apps.apple.com/de/app/ioki-doesNotExist/id6666666666",
+		Url:      "https://apps.apple.com/de/app/6666666666",
 		ImageSrc: "",
 		Error:    true,
 	}
-	got := iosAppInfo("ioki-doesNotExist/id6666666666")
+	got := iosAppInfo("6666666666")
 
 	fmt.Printf("\nGot the following iOS App info:\n%+v\n\n", got)
 	if want.Id != got.Id {
