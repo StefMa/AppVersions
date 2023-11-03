@@ -1,21 +1,31 @@
 package usecase
 
 import (
+	"strconv"
 	"strings"
 
 	playScraper "github.com/n0madic/google-play-scraper/pkg/app"
 	playScraperDevSearch "github.com/n0madic/google-play-scraper/pkg/developer"
+	"github.com/n0madic/google-play-scraper/pkg/scraper"
 )
 
 const androidUrlPrefix = "https://play.google.com/store/apps/details?id="
 
-func androidAppIdsFromDeveloperId(devId string) []string {
-	dev := playScraperDevSearch.NewByID(devId, playScraperDevSearch.Options{
+func androidAppIdsFromDeveloper(devIdOrName string) []string {
+	scapperOptions := playScraperDevSearch.Options{
 		Country:  "de",
 		Language: "de",
-		Number:   100,
-	})
-	err := dev.Run()
+		Number:   150,
+	}
+
+	var dev *scraper.Scraper
+	_, err := strconv.Atoi(devIdOrName)
+	if err == nil {
+		dev = playScraperDevSearch.NewByID(devIdOrName, scapperOptions)
+	} else {
+		dev = playScraperDevSearch.New(devIdOrName, scapperOptions)
+	}
+	err = dev.Run()
 	if err != nil {
 		return []string{}
 	}
