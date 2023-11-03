@@ -39,6 +39,22 @@ func TestAndroidAppInfoSuccess(t *testing.T) {
 	}
 }
 
+func TestAndroidAppDeveloperIdSuccess(t *testing.T) {
+	got := androidAppIdsFromDeveloper("8505861851834820244")
+
+	if len(got) <= 0 {
+		t.Errorf("Developer apps are empty! Got %v", got)
+	}
+}
+
+func TestAndroidAppDeveloperNameSuccess(t *testing.T) {
+	got := androidAppIdsFromDeveloper("Via Transportation Inc.")
+
+	if len(got) <= 0 {
+		t.Errorf("Developer apps are empty! Got %v", got)
+	}
+}
+
 func TestAndroidAppInfoFailure(t *testing.T) {
 	want := App{
 		Id:       "com.ioki.does.not.exist",
