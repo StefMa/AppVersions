@@ -15,7 +15,7 @@ func androidAppIdsFromDeveloper(devIdOrName string) []string {
 	scapperOptions := playScraperDevSearch.Options{
 		Country:  "de",
 		Language: "de",
-		Number:   100,
+		Number:   150,
 	}
 
 	var dev *scraper.Scraper
