@@ -44,14 +44,15 @@ func GetAppsInformation(androidAppOrDeveloper []string, iosAppOrDevIds []string)
 	}
 }
 
-func filterAppIds(appOrDeveloper []string, f func(devId string) []string) []string {
-	appIds := appOrDeveloper
-	for idx, appOrDeveloper := range appOrDeveloper {
+func filterAppIds(appsOrDeveloper []string, f func(devId string) []string) []string {
+	var appIds []string
+	for _, appOrDeveloper := range appsOrDeveloper {
 		if strings.HasPrefix(appOrDeveloper, developerIdPrefix) {
 			devId := strings.TrimPrefix(appOrDeveloper, developerIdPrefix)
 			appIdsFromDev := f(devId)
-			appIds = append(appIds[:idx], appIds[idx+1:]...)
 			appIds = append(appIds, appIdsFromDev...)
+		} else {
+			appIds = append(appIds, appOrDeveloper)
 		}
 	}
 	return appIds
