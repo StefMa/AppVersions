@@ -23,7 +23,7 @@ func androidAppIdsFromDeveloper(devIdOrName string) []string {
 	if err == nil {
 		dev = playScraperDevSearch.NewByID(devIdOrName, scapperOptions)
 	} else {
-		dev = playScraperDevSearch.New("Via Transportation Inc.", scapperOptions)
+		dev = playScraperDevSearch.New(devIdOrName, scapperOptions)
 	}
 	err = dev.Run()
 	if err != nil {
