@@ -14,7 +14,7 @@ jobs:
         with:
           go-version: '>=1.20'
           check-latest: true
-      - uses: StefMa/Upgrade-Go-Action@5fb81f57c0f9b9a7a6c976b885884715f0333cc8
+      - uses: StefMa/Upgrade-Go-Action@pr-avoidance
         with:
           base-branch: 'master'
         env:
