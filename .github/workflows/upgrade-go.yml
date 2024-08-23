@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: cat go.mod
       - uses: StefMa/Upgrade-Go-Action@use-godev-json-api
         with:
           base-branch: 'master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: cat go.mod
