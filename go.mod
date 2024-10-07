@@ -1,6 +1,6 @@
 module github.com/StefMa/AppVersions
 
-go 1.23.0
+go 1.23.2
 
 require (
 	github.com/StefMa/app-store-scraper v0.0.0-20230605055620-34462785e4a7
