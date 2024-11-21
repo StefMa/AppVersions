@@ -51,7 +51,6 @@ func androidAppInfo(appId string) App {
 func createAndroidApp(appId string, app *playScraper.App) App {
 	nameOk := app.Title != ""
 	versionOk := app.Version != ""
-	ratingOk := app.ScoreText != ""
 	imgOk := app.Icon != ""
 	return App{
 		Id:       appId,
@@ -60,6 +59,6 @@ func createAndroidApp(appId string, app *playScraper.App) App {
 		Rating:   strings.ReplaceAll(app.ScoreText, ",", "."),
 		Url:      androidUrlPrefix + appId,
 		ImageSrc: app.Icon,
-		Error:    !(nameOk && versionOk && ratingOk && imgOk),
+		Error:    !(nameOk && versionOk && imgOk),
 	}
 }
