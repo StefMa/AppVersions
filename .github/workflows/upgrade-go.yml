@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: StefMa/Upgrade-Go-Action@main
+      - uses: StefMa/Upgrade-Go-Action@pr-description
         with:
-          base-branch: 'master'
+          base-branch: 'upgrade-go-test'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
