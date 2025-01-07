@@ -8,13 +8,12 @@ import (
 
 func TestIosAppInfoSuccess(t *testing.T) {
 	want := App{
-		Id:       "1377071496",
-		Name:     "ioki Wittlich",
-		Url:      "https://apps.apple.com/de/app/ioki-wittlich/id1377071496?uo=4",
-		ImageSrc: "https://is2-ssl.mzstatic.com/image/thumb/Purple116/v4/34/bd/4a/34bd4aed-0472-0258-c8e8-b4e79a25fac8/AppIcon-0-1x_U007emarketing-0-7-0-85-220.png/246x0w.png",
-		Error:    false,
+		Id:    "1400408720",
+		Name:  "hvv hop",
+		Url:   "https://apps.apple.com/de/app/hvv-hop/id1400408720?uo=4",
+		Error: false,
 	}
-	got := iosAppInfo("1377071496")
+	got := iosAppInfo("1400408720")
 
 	fmt.Printf("\nGot the following iOS App info:\n%+v\n\n", got)
 	if want.Id != got.Id {
@@ -37,6 +36,14 @@ func TestIosAppInfoSuccess(t *testing.T) {
 	}
 	if want.Error != got.Error {
 		t.Errorf("%t is not %t", want.Error, got.Error)
+	}
+}
+
+func TestIosAppDeveloperIdSuccess(t *testing.T) {
+	got := iosAppIdsFromDeveloperId("1489448276")
+
+	if len(got) <= 0 {
+		t.Errorf("Developer apps are empty! Got %v", got)
 	}
 }
 
