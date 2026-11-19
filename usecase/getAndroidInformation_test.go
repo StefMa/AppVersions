@@ -1,7 +1,8 @@
 package usecase
 
 import (
-	"fmt"
+	"net/url"
+	"strings"
 	"testing"
 )
 
@@ -10,30 +11,54 @@ func TestAndroidAppInfoSuccess(t *testing.T) {
 		Id:       "com.ioki.hamburg",
 		Name:     "hvv hop",
 		Url:      "https://play.google.com/store/apps/details?id=com.ioki.hamburg",
-		ImageSrc: "https://play-lh.googleusercontent.com/pe6sBG19TijAfO6yPJ2q2zZM8pBMPd4GC7LbPWe0juZPAMx495vXxMY4Ame-B0q51uFV",
+		ImageSrc: "",
 		Error:    false,
 	}
+
 	got := androidAppInfo("com.ioki.hamburg")
 
-	fmt.Printf("\nGot the following Android App info:\n%+v\n\n", got)
+	t.Logf("\nGot the following Android App info:\n%+v\n", got)
+
 	if want.Id != got.Id {
 		t.Errorf("%s is not %s", want.Id, got.Id)
 	}
+
 	if want.Name != got.Name {
 		t.Errorf("%s is not %s", want.Name, got.Name)
 	}
-	if "" == got.Version {
-		t.Errorf("Version is empty")
+
+	if got.Version == "" {
+		t.Error("Version is empty")
 	}
-	if "" == got.Rating {
-		t.Errorf("Rating is empty")
+
+	if got.Rating == "" {
+		t.Error("Rating is empty")
 	}
+
 	if want.Url != got.Url {
 		t.Errorf("%s is not %s", want.Url, got.Url)
 	}
-	if want.ImageSrc != got.ImageSrc {
-		t.Errorf("%s is not %s", want.ImageSrc, got.ImageSrc)
+
+	imageURL, err := url.Parse(got.ImageSrc)
+	if err != nil {
+		t.Fatalf("ImageSrc is not a valid URL: %q: %v", got.ImageSrc, err)
 	}
+
+	if imageURL.Scheme != "https" {
+		t.Errorf("ImageSrc scheme = %q, want https", imageURL.Scheme)
+	}
+
+	if imageURL.Hostname() != "play-lh.googleusercontent.com" {
+		t.Errorf(
+			"ImageSrc host = %q, want play-lh.googleusercontent.com",
+			imageURL.Hostname(),
+		)
+	}
+
+	if strings.Trim(imageURL.Path, "/") == "" {
+		t.Errorf("ImageSrc has no image ID: %q", got.ImageSrc)
+	}
+
 	if want.Error != got.Error {
 		t.Errorf("%t is not %t", want.Error, got.Error)
 	}
@@ -65,27 +90,35 @@ func TestAndroidAppInfoFailure(t *testing.T) {
 		ImageSrc: "",
 		Error:    true,
 	}
+
 	got := androidAppInfo("com.ioki.does.not.exist")
 
-	fmt.Printf("\nGot the following Android App info:\n%+v\n\n", got)
+	t.Logf("\nGot the following Android App info:\n%+v\n", got)
+
 	if want.Id != got.Id {
 		t.Errorf("%s is not %s", want.Id, got.Id)
 	}
+
 	if want.Name != got.Name {
 		t.Errorf("%s is not %s", want.Name, got.Name)
 	}
-	if "" != got.Version {
-		t.Errorf("Version is not empty")
+
+	if want.Version != got.Version {
+		t.Errorf("%s is not %s", want.Version, got.Version)
 	}
-	if "" != got.Rating {
-		t.Errorf("Rating is not empty")
+
+	if want.Rating != got.Rating {
+		t.Errorf("%s is not %s", want.Rating, got.Rating)
 	}
+
 	if want.Url != got.Url {
 		t.Errorf("%s is not %s", want.Url, got.Url)
 	}
+
 	if want.ImageSrc != got.ImageSrc {
 		t.Errorf("%s is not %s", want.ImageSrc, got.ImageSrc)
 	}
+
 	if want.Error != got.Error {
 		t.Errorf("%t is not %t", want.Error, got.Error)
 	}
